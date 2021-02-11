@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+using WebApiSegura.Controllers;
 
 namespace WebApiSegura
 {
@@ -13,6 +14,9 @@ namespace WebApiSegura
 
             // Web-API-Routen
             config.MapHttpAttributeRoutes();
+
+            config.MessageHandlers.Add(new TokenValidationHandler());
+
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
