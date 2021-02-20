@@ -91,7 +91,7 @@ namespace WebApiSegura.Controllers
             if (hotel == null)
                 return BadRequest();
             if (RegistrarHotel(hotel))
-                return Ok();
+                return Ok(hotel);
             else return InternalServerError();
         }
 
@@ -127,7 +127,7 @@ namespace WebApiSegura.Controllers
             if (hotel == null)
                 return BadRequest();
             if (ActualizarHotel(hotel))
-                return Ok();
+                return Ok(hotel);
             else return InternalServerError();
         }
 

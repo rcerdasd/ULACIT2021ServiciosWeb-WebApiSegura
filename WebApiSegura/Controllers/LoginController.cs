@@ -9,7 +9,7 @@ using WebApiSegura.Models;
 
 namespace WebApiSegura.Controllers
 {
-    [AllowAnonymous]//significa que es publico
+    [AllowAnonymous]
 
     [RoutePrefix("api/login")]
     public class LoginController : ApiController
