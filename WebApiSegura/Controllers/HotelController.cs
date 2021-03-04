@@ -94,7 +94,6 @@ namespace WebApiSegura.Controllers
                 return Ok(hotel);
             else return InternalServerError();
         }
-
         private bool RegistrarHotel(Hotel hotel)
         {
             bool resultado = false;
@@ -119,7 +118,6 @@ namespace WebApiSegura.Controllers
 
             return resultado;
         }
-
 
         [HttpPut]
         public IHttpActionResult Actualizar(Hotel hotel)
@@ -163,7 +161,6 @@ namespace WebApiSegura.Controllers
 
             return resultado;
         }
-
 
         [HttpDelete]
         public IHttpActionResult Eliminar(int id)

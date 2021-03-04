@@ -56,8 +56,8 @@ namespace WebApiSegura.Controllers
             using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
             {
                 SqlCommand sqlCommand = new SqlCommand(@"SELECT        USU_CODIGO, USU_IDENTIFICACION, USU_NOMBRE, USU_PASSWORD, USU_EMAIL, USU_ESTADO, USU_FEC_NAC, USU_TELEFONO
-FROM            USUARIO
-WHERE USU_IDENTIFICACION = @USU_IDENTIFICACION",sqlConnection);
+                                                        FROM            USUARIO
+                                                        WHERE USU_IDENTIFICACION = @USU_IDENTIFICACION",sqlConnection);
                 sqlCommand.Parameters.AddWithValue("@USU_IDENTIFICACION", loginRequest.Username);
                 sqlConnection.Open();
                 SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
