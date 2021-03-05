@@ -12,6 +12,5 @@ namespace WebApiSegura.Models
         public int PAQ_VEH_CODIGO { get; set; }
         public DateTime RES_VEH_FEC_SALIDA { get; set; }
         public DateTime RES_VEH_FEC_REGRESO { get; set; }
-
     }
 }

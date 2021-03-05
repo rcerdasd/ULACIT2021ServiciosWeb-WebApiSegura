@@ -181,6 +181,7 @@
     <Compile Include="Controllers\HotelController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\RentacarController.cs" />
+    <Compile Include="Controllers\ReservaVehiculoController.cs" />
     <Compile Include="Controllers\TokenGenerator.cs" />
     <Compile Include="Controllers\TokenValidationHandler.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
@@ -193,8 +194,10 @@
     <Compile Include="Models\Aerolinea.cs" />
     <Compile Include="Models\Hotel.cs" />
     <Compile Include="Models\LoginRequest.cs" />
+    <Compile Include="Models\PaqueteVehiculo.cs" />
     <Compile Include="Models\Rentacar.cs" />
     <Compile Include="Models\Reserva.cs" />
+    <Compile Include="Models\ReservaVehiculo.cs" />
     <Compile Include="Models\Usuario.cs" />
     <Compile Include="Models\Vehiculo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -355,6 +358,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\ReservaVehiculo\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

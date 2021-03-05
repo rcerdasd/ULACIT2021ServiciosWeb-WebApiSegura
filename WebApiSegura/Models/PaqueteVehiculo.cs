@@ -9,8 +9,8 @@ namespace WebApiSegura.Models
     {
         public int PAQ_VEH_CODIGO { get; set; }
         public int VEH_CODIGO { get; set; }
-        public string PAQ_SEGURO { get; set; }
-        public string PAQ_BICICLETA { get; set; }
-        public string PAQ_DESCRIPCION { get; set; }
+        public int PAQ_SEGURO { get; set; }
+        public int PAQ_BICICLETA { get; set; }
+        public int PAQ_DESCRIPCION { get; set; }
     }
 }
