@@ -10,7 +10,8 @@ using WebApiSegura.Models;
 
 namespace WebApiSegura.Controllers
 {
-    [Authorize]
+    //[Authorize]
+    [AllowAnonymous]
     [RoutePrefix("api/hotel")]
     public class HotelController : ApiController
     {
