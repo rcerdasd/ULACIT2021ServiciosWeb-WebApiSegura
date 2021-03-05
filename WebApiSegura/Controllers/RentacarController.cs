@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Web;
+using System.Net;
+using System.Net.Http;
 using System.Web.Http;
 using WebApiSegura.Models;
+using System.Configuration;
 
 namespace WebApiSegura.Controllers
 {
-    [Authorize]
+    //[Authorize]
+    [AllowAnonymous]
     [RoutePrefix("api/rentacar")]
     public class RentacarController : ApiController
     {

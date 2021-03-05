@@ -145,7 +145,7 @@ namespace WebApiSegura.Controllers
                                                            USU_CODIGO = @USU_CODIGO, 
                                                            PAQ_VEH_CODIGO = @PAQ_VEH_CODIGO,
                                                            RES_VEH_FEC_SALIDA = @RES_VEH_FEC_SALIDA, 
-                                                           RES_VEH_FEC_REGRESO = @RES_VEH_FEC_REGRESO,
+                                                           RES_VEH_FEC_REGRESO = @RES_VEH_FEC_REGRESO
                                                        WHERE RES_VEH_CODIGO = @RES_VEH_CODIGO", sqlConnection);
                 sqlCommand.Parameters.AddWithValue("@RES_VEH_CODIGO", reserva.RES_VEH_CODIGO);
                 sqlCommand.Parameters.AddWithValue("@USU_CODIGO", reserva.USU_CODIGO);
