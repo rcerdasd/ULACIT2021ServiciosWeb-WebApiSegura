@@ -37,7 +37,7 @@ namespace WebApiSegura.Controllers
                         habitacion.HAB_TIPO = sqlDataReader.GetString(4);
                         habitacion.HAB_DESCRIPCION = sqlDataReader.GetString(5);
                         habitacion.HAB_ESTADO = sqlDataReader.GetString(6);
-                        habitacion.HAB_PRECIO = sqlDataReader.GetInt32(7);
+                        habitacion.HAB_PRECIO = sqlDataReader.GetDecimal(7);
                     }
                     sqlConnection.Close();
                 }
@@ -73,7 +73,7 @@ namespace WebApiSegura.Controllers
                             HAB_TIPO = sqlDataReader.GetString(4),
                             HAB_DESCRIPCION = sqlDataReader.GetString(5),
                             HAB_ESTADO = sqlDataReader.GetString(6),
-                            HAB_PRECIO = sqlDataReader.GetInt32(7)
+                            HAB_PRECIO = sqlDataReader.GetDecimal(7)
                         };
                         habitaciones.Add(habitacion);
                     }
