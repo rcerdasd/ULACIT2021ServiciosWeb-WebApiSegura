@@ -13,6 +13,5 @@ namespace WebApiSegura.Models
         public DateTime RES_AVI_FEC_VUELO { get; set; }
         public decimal RES_AVI_DURACION { get; set; }
         public string RES_AVI_ESCALA { get; set; }
-
     }
 }

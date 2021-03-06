@@ -7,7 +7,7 @@ namespace WebApiSegura.Models
 {
     public class Tiquete_Avion
     {
-        public int TIQ_AVI_CODIGO {get; set;}
+        public int TIQ_AVI_CODIGO { get; set; }
         public int RES_AVI_CODIGO { get; set; }
         public string TIQ_AVI_ORIGEN { get; set; }
         public string TIQ_AVI_DESTINO { get; set; }

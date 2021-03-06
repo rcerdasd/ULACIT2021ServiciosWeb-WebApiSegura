@@ -175,15 +175,16 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AsientoAvionController.cs" />
     <Compile Include="Controllers\AvionController.cs" />
-    <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\HabitacionController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\AerolineaController.cs" />
     <Compile Include="Controllers\HotelController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\RentacarController.cs" />
+    <Compile Include="Controllers\ReservaAvionController.cs" />
     <Compile Include="Controllers\ReservaHotelController.cs" />
     <Compile Include="Controllers\ReservaVehiculoController.cs" />
+    <Compile Include="Controllers\TiqueteAvionController.cs" />
     <Compile Include="Controllers\TokenGenerator.cs" />
     <Compile Include="Controllers\TokenValidationHandler.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />
@@ -201,7 +202,9 @@
     <Compile Include="Models\PaqueteVehiculo.cs" />
     <Compile Include="Models\Rentacar.cs" />
     <Compile Include="Models\Reserva.cs" />
+    <Compile Include="Models\ReservaAvion.cs" />
     <Compile Include="Models\ReservaVehiculo.cs" />
+    <Compile Include="Models\Tiquete_Avion.cs" />
     <Compile Include="Models\Usuario.cs" />
     <Compile Include="Models\Vehiculo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

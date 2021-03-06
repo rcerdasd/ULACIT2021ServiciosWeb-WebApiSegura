@@ -104,7 +104,7 @@ namespace WebApiSegura.Controllers
             using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
             {
                 SqlCommand sqlCommand = new SqlCommand(@"INSERT INTO TIQUETE_AVION (  RES_AVI_CODIGO, TIQ_AVI_ORIGEN, TIQ_AVI_DESTINO, TIQ_AVI_PRECIO) VALUES(  @RES_AVI_CODIGO, @TIQ_AVI_ORIGEN, @TIQ_AVI_DESTINO, @TIQ_AVI_PRECIO)", sqlConnection);
-                sqlCommand.Parameters.AddWithValue(" @RES_AVI_CODIGO", tiquete_Avion.RES_AVI_CODIGO);
+                sqlCommand.Parameters.AddWithValue("@RES_AVI_CODIGO", tiquete_Avion.RES_AVI_CODIGO);
                 sqlCommand.Parameters.AddWithValue("@TIQ_AVI_ORIGEN", tiquete_Avion.TIQ_AVI_ORIGEN);
                 sqlCommand.Parameters.AddWithValue("@TIQ_AVI_DESTINO", tiquete_Avion.TIQ_AVI_DESTINO);
                 sqlCommand.Parameters.AddWithValue("@TIQ_AVI_PRECIO", tiquete_Avion.TIQ_AVI_PRECIO);
@@ -143,10 +143,10 @@ namespace WebApiSegura.Controllers
                                                        RES_AVI_CODIGO=@RES_AVI_CODIGO,
                                                        TIQ_AVI_ORIGEN=@TIQ_AVI_ORIGEN,
                                                         TIQ_AVI_DESTINO=@TIQ_AVI_DESTINO,
-                                                        TIQ_AVI_PRECIO=@TIQ_AVI_PRECIO,
+                                                        TIQ_AVI_PRECIO=@TIQ_AVI_PRECIO
                                                         WHERE  TIQ_AVI_CODIGO=@TIQ_AVI_CODIGO", sqlConnection);
                 sqlCommand.Parameters.AddWithValue("@TIQ_AVI_CODIGO", tiquete_Avion.TIQ_AVI_CODIGO);
-                sqlCommand.Parameters.AddWithValue(" @RES_AVI_CODIGO", tiquete_Avion.RES_AVI_CODIGO);
+                sqlCommand.Parameters.AddWithValue("@RES_AVI_CODIGO", tiquete_Avion.RES_AVI_CODIGO);
                 sqlCommand.Parameters.AddWithValue("@TIQ_AVI_ORIGEN", tiquete_Avion.TIQ_AVI_ORIGEN);
                 sqlCommand.Parameters.AddWithValue("@TIQ_AVI_DESTINO", tiquete_Avion.TIQ_AVI_DESTINO);
                 sqlCommand.Parameters.AddWithValue("@TIQ_AVI_PRECIO", tiquete_Avion.TIQ_AVI_PRECIO);

@@ -19,20 +19,20 @@ namespace WebApiSegura.Controllers
         public IHttpActionResult GetReservaByID(int id)
         {
             ReservaAvion reservaAvion = new ReservaAvion();
-            
+
             try
             {
                 using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
                 {
                     SqlCommand sqlCommand = new SqlCommand(@"SELECT RES_AVI_CODIGO, USU_CODIGO, AVI_CODIGO, RES_AVI_FEC_VUELO, RES_AVI_DURACION, RES_AVI_ESCALA
-                        FROM            RESERVA_AVION WHERE RES_AVI_CODIGO=@RES_AVI_CODIGO",sqlConnection);
+                        FROM            RESERVA_AVION WHERE RES_AVI_CODIGO=@RES_AVI_CODIGO", sqlConnection);
                     sqlCommand.Parameters.AddWithValue("@RES_AVI_CODIGO", id);
                     sqlConnection.Open();
                     SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
                     while (sqlDataReader.Read())
                     {
                         reservaAvion.RES_AVI_CODIGO = sqlDataReader.GetInt32(0);
-                       reservaAvion.USU_CODIGO = sqlDataReader.GetInt32(1);
+                        reservaAvion.USU_CODIGO = sqlDataReader.GetInt32(1);
                         reservaAvion.AVI_CODIGO = sqlDataReader.GetInt32(2);
                         reservaAvion.RES_AVI_FEC_VUELO = sqlDataReader.GetDateTime(3);
                         reservaAvion.RES_AVI_DURACION = sqlDataReader.GetDecimal(4);
@@ -57,7 +57,7 @@ namespace WebApiSegura.Controllers
                 using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
                 {
                     SqlCommand sqlCommand = new SqlCommand(@"SELECT        RES_AVI_CODIGO, USU_CODIGO, AVI_CODIGO, RES_AVI_FEC_VUELO, RES_AVI_DURACION, RES_AVI_ESCALA
-                                                           FROM            RESERVA_AVION",sqlConnection);
+                                                           FROM            RESERVA_AVION", sqlConnection);
 
                     sqlConnection.Open();
                     SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
@@ -105,7 +105,7 @@ namespace WebApiSegura.Controllers
             using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
             {
                 SqlCommand sqlCommand = new SqlCommand(@"INSERT INTO RESERVA_AVION ( USU_CODIGO, AVI_CODIGO, RES_AVI_FEC_VUELO, RES_AVI_DURACION, RES_AVI_ESCALA) VALUES(   @USU_CODIGO, @AVI_CODIGO, @RES_AVI_FEC_VUELO, @RES_AVI_DURACION, @RES_AVI_ESCALA)", sqlConnection);
-                sqlCommand.Parameters.AddWithValue(" @USU_CODIGO", reservaAvion.USU_CODIGO);
+                sqlCommand.Parameters.AddWithValue("@USU_CODIGO", reservaAvion.USU_CODIGO);
                 sqlCommand.Parameters.AddWithValue("@AVI_CODIGO", reservaAvion.AVI_CODIGO);
                 sqlCommand.Parameters.AddWithValue("@RES_AVI_FEC_VUELO", reservaAvion.RES_AVI_FEC_VUELO);
                 sqlCommand.Parameters.AddWithValue("@RES_AVI_DURACION", reservaAvion.RES_AVI_DURACION);
@@ -145,9 +145,9 @@ namespace WebApiSegura.Controllers
                                                         RES_AVI_FEC_VUELO=@RES_AVI_FEC_VUELO,
                                                         RES_AVI_DURACION=@RES_AVI_DURACION,
                                                         RES_AVI_ESCALA=@RES_AVI_ESCALA
-                                                        WHERE  RES_AVI_CODIGO=@RES_AVI_CODIGO",sqlConnection);
+                                                        WHERE  RES_AVI_CODIGO=@RES_AVI_CODIGO", sqlConnection);
                 sqlCommand.Parameters.AddWithValue("@RES_AVI_CODIGO", reservaAvion.RES_AVI_CODIGO);
-                sqlCommand.Parameters.AddWithValue(" @USU_CODIGO", reservaAvion.USU_CODIGO);
+                sqlCommand.Parameters.AddWithValue("@USU_CODIGO", reservaAvion.USU_CODIGO);
                 sqlCommand.Parameters.AddWithValue("@AVI_CODIGO", reservaAvion.AVI_CODIGO);
                 sqlCommand.Parameters.AddWithValue("@RES_AVI_FEC_VUELO", reservaAvion.RES_AVI_FEC_VUELO);
                 sqlCommand.Parameters.AddWithValue("@RES_AVI_DURACION", reservaAvion.RES_AVI_DURACION);
@@ -172,7 +172,7 @@ namespace WebApiSegura.Controllers
             if (id < 1)
                 return BadRequest();
             if (DeleteReservaAvion(id))
-                return Ok(id);
+                return Ok();
             else
                 return InternalServerError();
         }
