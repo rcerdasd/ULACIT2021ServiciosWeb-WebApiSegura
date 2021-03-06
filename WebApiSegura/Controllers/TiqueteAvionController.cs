@@ -34,7 +34,7 @@ namespace WebApiSegura.Controllers
                         tiquete_Avion.TIQ_AVI_ORIGEN = sqlDataReader.GetString(2);
                         tiquete_Avion.TIQ_AVI_DESTINO = sqlDataReader.GetString(3);
                         tiquete_Avion.TIQ_AVI_PRECIO = sqlDataReader.GetDecimal(4);
-                        
+
                     }
                     sqlConnection.Close();
                 }
@@ -64,12 +64,12 @@ namespace WebApiSegura.Controllers
                     {
                         Tiquete_Avion tiquete_Avion = new Tiquete_Avion()
                         {
-                            TIQ_AVI_CODIGO= sqlDataReader.GetInt32(0),
+                            TIQ_AVI_CODIGO = sqlDataReader.GetInt32(0),
                             RES_AVI_CODIGO = sqlDataReader.GetInt32(1),
                             TIQ_AVI_ORIGEN = sqlDataReader.GetString(2),
                             TIQ_AVI_DESTINO = sqlDataReader.GetString(3),
                             TIQ_AVI_PRECIO = sqlDataReader.GetDecimal(4)
-                            
+
                         };
                         tiquete_Avions.Add(tiquete_Avion);
                     }
@@ -108,7 +108,7 @@ namespace WebApiSegura.Controllers
                 sqlCommand.Parameters.AddWithValue("@TIQ_AVI_ORIGEN", tiquete_Avion.TIQ_AVI_ORIGEN);
                 sqlCommand.Parameters.AddWithValue("@TIQ_AVI_DESTINO", tiquete_Avion.TIQ_AVI_DESTINO);
                 sqlCommand.Parameters.AddWithValue("@TIQ_AVI_PRECIO", tiquete_Avion.TIQ_AVI_PRECIO);
-                
+
 
                 sqlConnection.Open();
 
@@ -150,7 +150,7 @@ namespace WebApiSegura.Controllers
                 sqlCommand.Parameters.AddWithValue("@TIQ_AVI_ORIGEN", tiquete_Avion.TIQ_AVI_ORIGEN);
                 sqlCommand.Parameters.AddWithValue("@TIQ_AVI_DESTINO", tiquete_Avion.TIQ_AVI_DESTINO);
                 sqlCommand.Parameters.AddWithValue("@TIQ_AVI_PRECIO", tiquete_Avion.TIQ_AVI_PRECIO);
-               
+
 
                 sqlConnection.Open();
 
