@@ -72,7 +72,7 @@ namespace WebApiSegura.Controllers
                         usuario.USU_PASSWORD = sqlDataReader.GetString(3);
                         usuario.USU_EMAIL = sqlDataReader.GetString(4);
                         usuario.USU_ESTADO = sqlDataReader.GetString(5);
-                        usuario.USU_FECH_NAC = sqlDataReader.GetDateTime(6);
+                        usuario.USU_FEC_NAC = sqlDataReader.GetDateTime(6);
                         usuario.USU_TELEFONO = sqlDataReader.GetString(7);
                     }
                 }
@@ -96,7 +96,7 @@ namespace WebApiSegura.Controllers
                     sqlCommand.Parameters.AddWithValue("@USU_PASSWORD", usuario.USU_PASSWORD);
                     sqlCommand.Parameters.AddWithValue("@USU_EMAIL", usuario.USU_EMAIL);
                     sqlCommand.Parameters.AddWithValue("@USU_ESTADO", usuario.USU_ESTADO);
-                    sqlCommand.Parameters.AddWithValue("@USU_FEC_NAC", usuario.USU_FECH_NAC);
+                    sqlCommand.Parameters.AddWithValue("@USU_FEC_NAC", usuario.USU_FEC_NAC);
                     sqlCommand.Parameters.AddWithValue("@USU_TELEFONO", usuario.USU_TELEFONO);
 
                     sqlConnection.Open();
