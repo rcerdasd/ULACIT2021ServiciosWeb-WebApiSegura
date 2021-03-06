@@ -10,8 +10,7 @@ using System.Data.SqlClient;
 
 namespace WebApiSegura.Controllers
 {
-    //[Authorize]
-    [AllowAnonymous]
+    [Authorize]
     [RoutePrefix("api/reserva-hotel")]
     public class ReservaHotelController : ApiController
     {

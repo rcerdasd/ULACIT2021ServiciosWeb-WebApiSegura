@@ -10,8 +10,7 @@ using System.Data.SqlClient;
 
 namespace WebApiSegura.Controllers
 {
-    //[Authorize]
-    [AllowAnonymous]
+    [Authorize]
     [RoutePrefix("api/usuario")]
     public class UsuarioController : ApiController
     {

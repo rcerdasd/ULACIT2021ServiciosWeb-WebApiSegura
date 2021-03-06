@@ -10,9 +10,8 @@ using System.Configuration;
 
 namespace WebApiSegura.Controllers
 {
-    //[Authorize]
-    [AllowAnonymous]
-    [RoutePrefix("api/reserva-vehiculo")]
+    [Authorize]
+    [RoutePrefix("api/reservavehiculo")]
     public class ReservaVehiculoController : ApiController
     {
         [HttpGet]
