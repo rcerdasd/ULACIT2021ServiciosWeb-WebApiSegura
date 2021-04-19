@@ -166,7 +166,7 @@ namespace WebApiSegura.Controllers
             if (id<1)
                 return BadRequest();
             if (EliminarAerolinea(id))
-                return Ok();
+                return Ok(id);
             else return InternalServerError();
         }
 

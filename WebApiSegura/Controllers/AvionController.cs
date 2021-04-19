@@ -171,7 +171,7 @@ namespace WebApiSegura.Controllers
             if (id<1)
                 return BadRequest();
             if (EliminarAvion(id))
-                return Ok();
+                return Ok(id);
             else return InternalServerError();
         }
 
