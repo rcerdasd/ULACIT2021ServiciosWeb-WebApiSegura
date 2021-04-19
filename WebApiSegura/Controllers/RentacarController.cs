@@ -164,30 +164,38 @@ namespace WebApiSegura.Controllers
             if (id < 1)
                 return BadRequest();
             if (EliminarRentacar(id))
-                return Ok();
+                return Ok(id);
             else return InternalServerError();
         }
 
         private bool EliminarRentacar(int id)
         {
-            bool resultado = false;
-
-            using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
+            try
             {
-                SqlCommand sqlCommand = new SqlCommand(@"DELETE RENTACAR 
+                bool resultado = false;
+
+                using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
+                {
+                    SqlCommand sqlCommand = new SqlCommand(@"DELETE RENTACAR 
                                                        WHERE REN_CODIGO = @REN_CODIGO", sqlConnection);
-                sqlCommand.Parameters.AddWithValue("@REN_CODIGO", id);
+                    sqlCommand.Parameters.AddWithValue("@REN_CODIGO", id);
 
-                sqlConnection.Open();
+                    sqlConnection.Open();
 
-                int filasAfectadas = sqlCommand.ExecuteNonQuery();
-                if (filasAfectadas > 0)
-                    return true;
+                    int filasAfectadas = sqlCommand.ExecuteNonQuery();
+                    if (filasAfectadas > 0)
+                        return true;
 
-                sqlConnection.Close();
+                    sqlConnection.Close();
+                }
+
+                return resultado;
             }
+            catch (Exception)
+            {
 
-            return resultado;
+                return false;
+            }
         }
 
         

@@ -11,7 +11,7 @@ using System.Data.SqlClient;
 namespace WebApiSegura.Controllers
 {
     [Authorize]
-    [RoutePrefix("api/reserva-hotel")]
+    [RoutePrefix("api/reservahotel")]
     public class ReservaHotelController : ApiController
     {
         [HttpGet]
@@ -94,26 +94,34 @@ namespace WebApiSegura.Controllers
         }
         private bool RegistrarReservaHotel(Reserva reserva)
         {
-            bool resultado = false;
+            
 
-            using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
+            try
             {
-                SqlCommand sqlCommand = new SqlCommand(@"INSERT INTO RESERVA (USU_CODIGO, HAB_CODIGO, RES_FECHA_INGRESO, RES_FECHA_SALIDA) VALUES (@USU_CODIGO, @HAB_CODIGO, @RES_FECHA_INGRESO, @RES_FECHA_SALIDA)", sqlConnection);
-                sqlCommand.Parameters.AddWithValue("@HOT_NOMBRE", reserva.USU_CODIGO);
-                sqlCommand.Parameters.AddWithValue("@HOT_EMAIL", reserva.HAB_CODIGO);
-                sqlCommand.Parameters.AddWithValue("@HOT_DIRECCION", reserva.RES_FECHA_INGRESO);
-                sqlCommand.Parameters.AddWithValue("@HOT_TELEFONO", reserva.RES_FECHA_SALIDA);
+                using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
+                {
+                    SqlCommand sqlCommand = new SqlCommand(@"INSERT INTO RESERVA (USU_CODIGO, HAB_CODIGO, RES_FECHA_INGRESO, RES_FECHA_SALIDA) VALUES (@USU_CODIGO, @HAB_CODIGO, @RES_FECHA_INGRESO, @RES_FECHA_SALIDA)", sqlConnection);
+                    sqlCommand.Parameters.AddWithValue("@USU_CODIGO", reserva.USU_CODIGO);
+                    sqlCommand.Parameters.AddWithValue("@HAB_CODIGO", reserva.HAB_CODIGO);
+                    sqlCommand.Parameters.AddWithValue("@RES_FECHA_INGRESO", reserva.RES_FECHA_INGRESO);
+                    sqlCommand.Parameters.AddWithValue("@RES_FECHA_SALIDA", reserva.RES_FECHA_SALIDA);
 
-                sqlConnection.Open();
+                    sqlConnection.Open();
 
-                int filasAfectadas = sqlCommand.ExecuteNonQuery();
-                if (filasAfectadas > 0)
-                    return true;
+                    int filasAfectadas = sqlCommand.ExecuteNonQuery();
+                    if (filasAfectadas > 0)
+                        return true;
 
-                sqlConnection.Close();
+                    sqlConnection.Close();
+                }
+            }
+            catch
+            {
+
+                return false;
             }
 
-            return resultado;
+            return false;
         }
 
         [HttpPut]
@@ -128,35 +136,42 @@ namespace WebApiSegura.Controllers
 
         private bool ActualizarReserva(Reserva reserva)
         {
-            bool resultado = false;
-
-            using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
+            try
             {
-                SqlCommand sqlCommand = new SqlCommand(@"UPDATE RESERVA 
+                bool resultado = false;
+
+                using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
+                {
+                    SqlCommand sqlCommand = new SqlCommand(@"UPDATE RESERVA 
                                                        SET 
                                                            USU_CODIGO = @USU_CODIGO, 
                                                            HAB_CODIGO = @HAB_CODIGO,
                                                            RES_FECHA_INGRESO = @RES_FECHA_INGRESO, 
-                                                           RES_FECHA_SALIDA = @RES_FECHA_SALIDA,
-                                                           HOT_CATEGORIA = @HOT_CATEGORIA
+                                                           RES_FECHA_SALIDA = @RES_FECHA_SALIDA
                                                        WHERE RES_CODIGO = @RES_CODIGO", sqlConnection);
-                sqlCommand.Parameters.AddWithValue("@RES_CODIGO", reserva.RES_CODIGO);
-                sqlCommand.Parameters.AddWithValue("@USU_CODIGO", reserva.USU_CODIGO);
-                sqlCommand.Parameters.AddWithValue("@HAB_CODIGO", reserva.HAB_CODIGO);
-                sqlCommand.Parameters.AddWithValue("@RES_FECHA_INGRESO", reserva.RES_FECHA_INGRESO);
-                sqlCommand.Parameters.AddWithValue("@RES_FECHA_SALIDA", reserva.RES_FECHA_SALIDA);
-                
+                    sqlCommand.Parameters.AddWithValue("@RES_CODIGO", reserva.RES_CODIGO);
+                    sqlCommand.Parameters.AddWithValue("@USU_CODIGO", reserva.USU_CODIGO);
+                    sqlCommand.Parameters.AddWithValue("@HAB_CODIGO", reserva.HAB_CODIGO);
+                    sqlCommand.Parameters.AddWithValue("@RES_FECHA_INGRESO", reserva.RES_FECHA_INGRESO);
+                    sqlCommand.Parameters.AddWithValue("@RES_FECHA_SALIDA", reserva.RES_FECHA_SALIDA);
 
-                sqlConnection.Open();
 
-                int filasAfectadas = sqlCommand.ExecuteNonQuery();
-                if (filasAfectadas > 0)
-                    return true;
+                    sqlConnection.Open();
 
-                sqlConnection.Close();
+                    int filasAfectadas = sqlCommand.ExecuteNonQuery();
+                    if (filasAfectadas > 0)
+                        return true;
+
+                    sqlConnection.Close();
+                }
+
+                return resultado;
             }
+            catch
+            {
 
-            return resultado;
+                return false;
+            }
         }
 
         [HttpDelete]
@@ -165,31 +180,39 @@ namespace WebApiSegura.Controllers
             if (id < 1)
                 return BadRequest();
             if (EliminarReserva(id))
-                return Ok();
+                return Ok(id);
             else return InternalServerError();
         }
 
         private bool EliminarReserva(int id)
         {
-            bool resultado = false;
-
-            using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
+            try
             {
-                SqlCommand sqlCommand = new SqlCommand(@"DELETE RESERVA 
+                bool resultado = false;
+
+                using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
+                {
+                    SqlCommand sqlCommand = new SqlCommand(@"DELETE RESERVA 
                                                        WHERE RES_CODIGO = @RES_CODIGO", sqlConnection);
-                sqlCommand.Parameters.AddWithValue("@RES_CODIGO", id);
+                    sqlCommand.Parameters.AddWithValue("@RES_CODIGO", id);
 
 
-                sqlConnection.Open();
+                    sqlConnection.Open();
 
-                int filasAfectadas = sqlCommand.ExecuteNonQuery();
-                if (filasAfectadas > 0)
-                    return true;
+                    int filasAfectadas = sqlCommand.ExecuteNonQuery();
+                    if (filasAfectadas > 0)
+                        return true;
 
-                sqlConnection.Close();
+                    sqlConnection.Close();
+                }
+
+                return resultado;
             }
+            catch (Exception)
+            {
 
-            return resultado;
+                return false;
+            }
         }
     }
 }

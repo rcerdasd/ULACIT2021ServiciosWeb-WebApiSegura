@@ -180,7 +180,7 @@ namespace WebApiSegura.Controllers
             if (id < 1)
                 return BadRequest();
             if (EliminarHabitacion(id))
-                return Ok();
+                return Ok(id);
             else return InternalServerError();
         }
 
