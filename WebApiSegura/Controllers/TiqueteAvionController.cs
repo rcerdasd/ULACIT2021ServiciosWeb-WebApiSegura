@@ -100,27 +100,35 @@ namespace WebApiSegura.Controllers
         }
         private bool AddTiqueteAvion(Tiquete_Avion tiquete_Avion)
         {
-            bool resultado = false;
-            using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
+            try
             {
-                SqlCommand sqlCommand = new SqlCommand(@"INSERT INTO TIQUETE_AVION (  RES_AVI_CODIGO, TIQ_AVI_ORIGEN, TIQ_AVI_DESTINO, TIQ_AVI_PRECIO) VALUES(  @RES_AVI_CODIGO, @TIQ_AVI_ORIGEN, @TIQ_AVI_DESTINO, @TIQ_AVI_PRECIO)", sqlConnection);
-                sqlCommand.Parameters.AddWithValue("@RES_AVI_CODIGO", tiquete_Avion.RES_AVI_CODIGO);
-                sqlCommand.Parameters.AddWithValue("@TIQ_AVI_ORIGEN", tiquete_Avion.TIQ_AVI_ORIGEN);
-                sqlCommand.Parameters.AddWithValue("@TIQ_AVI_DESTINO", tiquete_Avion.TIQ_AVI_DESTINO);
-                sqlCommand.Parameters.AddWithValue("@TIQ_AVI_PRECIO", tiquete_Avion.TIQ_AVI_PRECIO);
-
-
-                sqlConnection.Open();
-
-                int filasAfectadas = sqlCommand.ExecuteNonQuery();
-                if (filasAfectadas > 0)
+                bool resultado = false;
+                using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
                 {
-                    resultado = true;
-                }
+                    SqlCommand sqlCommand = new SqlCommand(@"INSERT INTO TIQUETE_AVION (  RES_AVI_CODIGO, TIQ_AVI_ORIGEN, TIQ_AVI_DESTINO, TIQ_AVI_PRECIO) VALUES(  @RES_AVI_CODIGO, @TIQ_AVI_ORIGEN, @TIQ_AVI_DESTINO, @TIQ_AVI_PRECIO)", sqlConnection);
+                    sqlCommand.Parameters.AddWithValue("@RES_AVI_CODIGO", tiquete_Avion.RES_AVI_CODIGO);
+                    sqlCommand.Parameters.AddWithValue("@TIQ_AVI_ORIGEN", tiquete_Avion.TIQ_AVI_ORIGEN);
+                    sqlCommand.Parameters.AddWithValue("@TIQ_AVI_DESTINO", tiquete_Avion.TIQ_AVI_DESTINO);
+                    sqlCommand.Parameters.AddWithValue("@TIQ_AVI_PRECIO", tiquete_Avion.TIQ_AVI_PRECIO);
 
-                sqlConnection.Close();
+
+                    sqlConnection.Open();
+
+                    int filasAfectadas = sqlCommand.ExecuteNonQuery();
+                    if (filasAfectadas > 0)
+                    {
+                        resultado = true;
+                    }
+
+                    sqlConnection.Close();
+                }
+                return resultado;
             }
-            return resultado;
+            catch (Exception)
+            {
+
+                return false;
+            }
         }
 
 
@@ -136,33 +144,41 @@ namespace WebApiSegura.Controllers
         }
         private bool UpdateTiqueteAvion(Tiquete_Avion tiquete_Avion)
         {
-            bool resultado = false;
-            using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
+            try
             {
-                SqlCommand sqlCommand = new SqlCommand(@"UPDATE TIQUETE_AVION SET
+                bool resultado = false;
+                using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
+                {
+                    SqlCommand sqlCommand = new SqlCommand(@"UPDATE TIQUETE_AVION SET
                                                        RES_AVI_CODIGO=@RES_AVI_CODIGO,
                                                        TIQ_AVI_ORIGEN=@TIQ_AVI_ORIGEN,
                                                         TIQ_AVI_DESTINO=@TIQ_AVI_DESTINO,
                                                         TIQ_AVI_PRECIO=@TIQ_AVI_PRECIO
                                                         WHERE  TIQ_AVI_CODIGO=@TIQ_AVI_CODIGO", sqlConnection);
-                sqlCommand.Parameters.AddWithValue("@TIQ_AVI_CODIGO", tiquete_Avion.TIQ_AVI_CODIGO);
-                sqlCommand.Parameters.AddWithValue("@RES_AVI_CODIGO", tiquete_Avion.RES_AVI_CODIGO);
-                sqlCommand.Parameters.AddWithValue("@TIQ_AVI_ORIGEN", tiquete_Avion.TIQ_AVI_ORIGEN);
-                sqlCommand.Parameters.AddWithValue("@TIQ_AVI_DESTINO", tiquete_Avion.TIQ_AVI_DESTINO);
-                sqlCommand.Parameters.AddWithValue("@TIQ_AVI_PRECIO", tiquete_Avion.TIQ_AVI_PRECIO);
+                    sqlCommand.Parameters.AddWithValue("@TIQ_AVI_CODIGO", tiquete_Avion.TIQ_AVI_CODIGO);
+                    sqlCommand.Parameters.AddWithValue("@RES_AVI_CODIGO", tiquete_Avion.RES_AVI_CODIGO);
+                    sqlCommand.Parameters.AddWithValue("@TIQ_AVI_ORIGEN", tiquete_Avion.TIQ_AVI_ORIGEN);
+                    sqlCommand.Parameters.AddWithValue("@TIQ_AVI_DESTINO", tiquete_Avion.TIQ_AVI_DESTINO);
+                    sqlCommand.Parameters.AddWithValue("@TIQ_AVI_PRECIO", tiquete_Avion.TIQ_AVI_PRECIO);
 
 
-                sqlConnection.Open();
+                    sqlConnection.Open();
 
-                int filasAfectadas = sqlCommand.ExecuteNonQuery();
-                if (filasAfectadas > 0)
-                {
-                    resultado = true;
+                    int filasAfectadas = sqlCommand.ExecuteNonQuery();
+                    if (filasAfectadas > 0)
+                    {
+                        resultado = true;
+                    }
+
+                    sqlConnection.Close();
                 }
-
-                sqlConnection.Close();
+                return resultado;
             }
-            return resultado;
+            catch (Exception)
+            {
+
+                return false;
+            }
         }
 
         public IHttpActionResult Delete(int id)
@@ -176,25 +192,33 @@ namespace WebApiSegura.Controllers
         }
         private bool DeleteTiqueteAvion(int id)
         {
-            bool resultado = false;
-            using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
+            try
             {
-                SqlCommand sqlCommand = new SqlCommand(@"DELETE  TIQUETE_AVION  
-                                                        WHERE TIQ_AVI_CODIGO=@TIQ_AVI_CODIGO", sqlConnection);
-                sqlCommand.Parameters.AddWithValue("@TIQ_AVI_CODIGO", id);
-
-
-                sqlConnection.Open();
-
-                int filasAfectadas = sqlCommand.ExecuteNonQuery();
-                if (filasAfectadas > 0)
+                bool resultado = false;
+                using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
                 {
-                    resultado = true;
-                }
+                    SqlCommand sqlCommand = new SqlCommand(@"DELETE  TIQUETE_AVION  
+                                                        WHERE TIQ_AVI_CODIGO=@TIQ_AVI_CODIGO", sqlConnection);
+                    sqlCommand.Parameters.AddWithValue("@TIQ_AVI_CODIGO", id);
 
-                sqlConnection.Close();
+
+                    sqlConnection.Open();
+
+                    int filasAfectadas = sqlCommand.ExecuteNonQuery();
+                    if (filasAfectadas > 0)
+                    {
+                        resultado = true;
+                    }
+
+                    sqlConnection.Close();
+                }
+                return resultado;
             }
-            return resultado;
+            catch (Exception)
+            {
+
+                return false;
+            }
         }
 
 

@@ -17,9 +17,10 @@ namespace WebApiSegura.Controllers
         [HttpGet]
         public IHttpActionResult GetId(int id)
         {
-            AsientoAvion asiento = new AsientoAvion();
+            
             try
             {
+                AsientoAvion asiento = new AsientoAvion();
                 using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
                 {
                     SqlCommand sqlCommand = new SqlCommand(@"SELECT ASI_AVI_CODIGO, AVI_CODIGO, ASI_AVI_NUMERO, ASI_AVI_POSICION, ASI_AVI_CLASE, ASI_AVI_PRECIO FROM ASIENTO_AVION WHERE ASI_AVI_CODIGO = @ASI_AVI_CODIGO", sqlConnection);
@@ -38,21 +39,23 @@ namespace WebApiSegura.Controllers
                     }
                     sqlConnection.Close();
                 }
+                return Ok(asiento);
             }
             catch (Exception e)
             {
                 return InternalServerError(e);
             }
-            return Ok(asiento);
+            
         }
 
         [HttpGet]
         public IHttpActionResult GetAll()
         {
-            List<AsientoAvion> asientos = new List<AsientoAvion>();
+            
 
             try
             {
+                List<AsientoAvion> asientos = new List<AsientoAvion>();
                 using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
                 {
                     SqlCommand sqlCommand = new SqlCommand(@"SELECT ASI_AVI_CODIGO, AVI_CODIGO, ASI_AVI_NUMERO, ASI_AVI_POSICION, ASI_AVI_CLASE, ASI_AVI_PRECIO FROM ASIENTO_AVION", sqlConnection);
@@ -76,13 +79,14 @@ namespace WebApiSegura.Controllers
                     
                     sqlConnection.Close();
                 }
+                return Ok(asientos);
             }
             catch (Exception e)
             {
                 return InternalServerError(e);
             }
             
-            return Ok(asientos);
+            
         }
 
         [HttpPost]
@@ -97,27 +101,35 @@ namespace WebApiSegura.Controllers
 
         private bool RegistrarAsiento(AsientoAvion asiento)
         {
-            bool resultado = false;
-
-            using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
+            try
             {
-                SqlCommand sqlCommand = new SqlCommand(@"INSERT INTO ASIENTO_AVION (AVI_CODIGO, ASI_AVI_NUMERO, ASI_AVI_POSICION, ASI_AVI_CLASE, ASI_AVI_PRECIO) VALUES (@AVI_CODIGO, @ASI_AVI_NUMERO, @ASI_AVI_POSICION, @ASI_AVI_CLASE, @ASI_AVI_PRECIO)", sqlConnection);
-                sqlCommand.Parameters.AddWithValue("@AVI_CODIGO", asiento.AVI_CODIGO);
-                sqlCommand.Parameters.AddWithValue("@ASI_AVI_NUMERO", asiento.ASI_AVI_NUMERO);
-                sqlCommand.Parameters.AddWithValue("@ASI_AVI_POSICION", asiento.ASI_AVI_POSICION);
-                sqlCommand.Parameters.AddWithValue("@ASI_AVI_CLASE", asiento.ASI_AVI_CLASE);
-                sqlCommand.Parameters.AddWithValue("@ASI_AVI_PRECIO", asiento.ASI_AVI_PRECIO);
+                bool resultado = false;
 
-                sqlConnection.Open();
+                using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
+                {
+                    SqlCommand sqlCommand = new SqlCommand(@"INSERT INTO ASIENTO_AVION (AVI_CODIGO, ASI_AVI_NUMERO, ASI_AVI_POSICION, ASI_AVI_CLASE, ASI_AVI_PRECIO) VALUES (@AVI_CODIGO, @ASI_AVI_NUMERO, @ASI_AVI_POSICION, @ASI_AVI_CLASE, @ASI_AVI_PRECIO)", sqlConnection);
+                    sqlCommand.Parameters.AddWithValue("@AVI_CODIGO", asiento.AVI_CODIGO);
+                    sqlCommand.Parameters.AddWithValue("@ASI_AVI_NUMERO", asiento.ASI_AVI_NUMERO);
+                    sqlCommand.Parameters.AddWithValue("@ASI_AVI_POSICION", asiento.ASI_AVI_POSICION);
+                    sqlCommand.Parameters.AddWithValue("@ASI_AVI_CLASE", asiento.ASI_AVI_CLASE);
+                    sqlCommand.Parameters.AddWithValue("@ASI_AVI_PRECIO", asiento.ASI_AVI_PRECIO);
 
-                int filasAfectadas = sqlCommand.ExecuteNonQuery();
-                if (filasAfectadas > 0)
-                    return true;
+                    sqlConnection.Open();
 
-                sqlConnection.Close();
+                    int filasAfectadas = sqlCommand.ExecuteNonQuery();
+                    if (filasAfectadas > 0)
+                        return true;
+
+                    sqlConnection.Close();
+                }
+
+                return resultado;
             }
+            catch (Exception)
+            {
 
-            return resultado;
+                return false;
+            }
         }
 
 
@@ -133,11 +145,13 @@ namespace WebApiSegura.Controllers
 
         private bool ActualizarAsiento(AsientoAvion asiento)
         {
-            bool resultado = false;
-
-            using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
+            try
             {
-                SqlCommand sqlCommand = new SqlCommand(@"UPDATE ASIENTO_AVION 
+                bool resultado = false;
+
+                using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
+                {
+                    SqlCommand sqlCommand = new SqlCommand(@"UPDATE ASIENTO_AVION 
                                                        SET 
                                                            AVI_CODIGO = @AVI_CODIGO, 
                                                            ASI_AVI_NUMERO = @ASI_AVI_NUMERO,
@@ -145,23 +159,29 @@ namespace WebApiSegura.Controllers
                                                            ASI_AVI_CLASE = @ASI_AVI_CLASE,
                                                            ASI_AVI_PRECIO = @ASI_AVI_PRECIO
                                                        WHERE ASI_AVI_CODIGO = @ASI_AVI_CODIGO", sqlConnection);
-                sqlCommand.Parameters.AddWithValue("@ASI_AVI_CODIGO", asiento.ASI_AVI_CODIGO);
-                sqlCommand.Parameters.AddWithValue("@AVI_CODIGO", asiento.AVI_CODIGO);
-                sqlCommand.Parameters.AddWithValue("@ASI_AVI_NUMERO", asiento.ASI_AVI_NUMERO);
-                sqlCommand.Parameters.AddWithValue("@ASI_AVI_POSICION", asiento.ASI_AVI_POSICION);
-                sqlCommand.Parameters.AddWithValue("@ASI_AVI_CLASE", asiento.ASI_AVI_CLASE);
-                sqlCommand.Parameters.AddWithValue("@ASI_AVI_PRECIO", asiento.ASI_AVI_PRECIO);
+                    sqlCommand.Parameters.AddWithValue("@ASI_AVI_CODIGO", asiento.ASI_AVI_CODIGO);
+                    sqlCommand.Parameters.AddWithValue("@AVI_CODIGO", asiento.AVI_CODIGO);
+                    sqlCommand.Parameters.AddWithValue("@ASI_AVI_NUMERO", asiento.ASI_AVI_NUMERO);
+                    sqlCommand.Parameters.AddWithValue("@ASI_AVI_POSICION", asiento.ASI_AVI_POSICION);
+                    sqlCommand.Parameters.AddWithValue("@ASI_AVI_CLASE", asiento.ASI_AVI_CLASE);
+                    sqlCommand.Parameters.AddWithValue("@ASI_AVI_PRECIO", asiento.ASI_AVI_PRECIO);
 
-                sqlConnection.Open();
+                    sqlConnection.Open();
 
-                int filasAfectadas = sqlCommand.ExecuteNonQuery();
-                if (filasAfectadas > 0)
-                    return true;
+                    int filasAfectadas = sqlCommand.ExecuteNonQuery();
+                    if (filasAfectadas > 0)
+                        return true;
 
-                sqlConnection.Close();
+                    sqlConnection.Close();
+                }
+
+                return resultado;
             }
+            catch (Exception)
+            {
 
-            return resultado;
+                return false;
+            }
         }
 
 
@@ -177,25 +197,33 @@ namespace WebApiSegura.Controllers
 
         private bool EliminarAsiento(int id)
         {
-            bool resultado = false;
-
-            using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
+            try
             {
-                SqlCommand sqlCommand = new SqlCommand(@"DELETE ASIENTO_AVION 
+                bool resultado = false;
+
+                using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
+                {
+                    SqlCommand sqlCommand = new SqlCommand(@"DELETE ASIENTO_AVION 
                                                        WHERE ASI_AVI_CODIGO = @ASI_AVI_CODIGO", sqlConnection);
-                sqlCommand.Parameters.AddWithValue("@ASI_AVI_CODIGO", id);
+                    sqlCommand.Parameters.AddWithValue("@ASI_AVI_CODIGO", id);
 
 
-                sqlConnection.Open();
+                    sqlConnection.Open();
 
-                int filasAfectadas = sqlCommand.ExecuteNonQuery();
-                if (filasAfectadas > 0)
-                    return true;
+                    int filasAfectadas = sqlCommand.ExecuteNonQuery();
+                    if (filasAfectadas > 0)
+                        return true;
 
-                sqlConnection.Close();
+                    sqlConnection.Close();
+                }
+
+                return resultado;
             }
+            catch (Exception)
+            {
 
-            return resultado;
+                return false;
+            }
         }
     }
 }

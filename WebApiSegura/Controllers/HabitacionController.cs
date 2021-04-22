@@ -18,9 +18,10 @@ namespace WebApiSegura.Controllers
         [HttpGet]
         public IHttpActionResult GetId(int id)
         {
-            Habitacion habitacion = new Habitacion();
+            
             try
             {
+                Habitacion habitacion = new Habitacion();
                 using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
                 {
                     SqlCommand sqlCommand = new SqlCommand(@"SELECT HAB_CODIGO, HOT_CODIGO, HAB_NUMERO, HAB_CAPACIDAD, HAB_TIPO, HAB_DESCRIPCION, HAB_ESTADO, HAB_PRECIO FROM HABITACION WHERE HAB_CODIGO = @HAB_CODIGO", sqlConnection);
@@ -41,21 +42,23 @@ namespace WebApiSegura.Controllers
                     }
                     sqlConnection.Close();
                 }
+                return Ok(habitacion);
             }
             catch (Exception e)
             {
                 return InternalServerError(e);
             }
-            return Ok(habitacion);
+            
         }
 
         [HttpGet]
         public IHttpActionResult GetAll()
         {
-            List<Habitacion> habitaciones = new List<Habitacion>();
+            
 
             try
             {
+                List<Habitacion> habitaciones = new List<Habitacion>();
                 using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
                 {
                     SqlCommand sqlCommand = new SqlCommand(@"SELECT HAB_CODIGO, HOT_CODIGO, HAB_NUMERO, HAB_CAPACIDAD, HAB_TIPO, HAB_DESCRIPCION, HAB_ESTADO, HAB_PRECIO FROM HABITACION", sqlConnection);
@@ -81,13 +84,14 @@ namespace WebApiSegura.Controllers
 
                     sqlConnection.Close();
                 }
+                return Ok(habitaciones);
             }
             catch (Exception e)
             {
                 return InternalServerError(e);
             }
 
-            return Ok(habitaciones);
+            
         }
 
         [HttpPost]
@@ -101,29 +105,37 @@ namespace WebApiSegura.Controllers
         }
         private bool RegistrarHabitacion(Habitacion habitacion)
         {
-            bool resultado = false;
-
-            using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
+            try
             {
-                SqlCommand sqlCommand = new SqlCommand(@"INSERT INTO HABITACION (HOT_CODIGO, HAB_NUMERO, HAB_CAPACIDAD, HAB_TIPO, HAB_DESCRIPCION, HAB_ESTADO, HAB_PRECIO) VALUES (@HOT_CODIGO, @HAB_NUMERO, @HAB_CAPACIDAD, @HAB_TIPO, @HAB_DESCRIPCION, @HAB_ESTADO, @HAB_PRECIO)", sqlConnection);
-                sqlCommand.Parameters.AddWithValue("@HOT_CODIGO", habitacion.HOT_CODIGO);
-                sqlCommand.Parameters.AddWithValue("@HAB_NUMERO", habitacion.HAB_NUMERO);
-                sqlCommand.Parameters.AddWithValue("@HAB_CAPACIDAD", habitacion.HAB_CAPACIDAD);
-                sqlCommand.Parameters.AddWithValue("@HAB_TIPO", habitacion.HAB_TIPO);
-                sqlCommand.Parameters.AddWithValue("@HAB_DESCRIPCION", habitacion.HAB_DESCRIPCION);
-                sqlCommand.Parameters.AddWithValue("@HAB_ESTADO", habitacion.HAB_ESTADO);
-                sqlCommand.Parameters.AddWithValue("@HAB_PRECIO", habitacion.HAB_PRECIO);
+                bool resultado = false;
 
-                sqlConnection.Open();
+                using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
+                {
+                    SqlCommand sqlCommand = new SqlCommand(@"INSERT INTO HABITACION (HOT_CODIGO, HAB_NUMERO, HAB_CAPACIDAD, HAB_TIPO, HAB_DESCRIPCION, HAB_ESTADO, HAB_PRECIO) VALUES (@HOT_CODIGO, @HAB_NUMERO, @HAB_CAPACIDAD, @HAB_TIPO, @HAB_DESCRIPCION, @HAB_ESTADO, @HAB_PRECIO)", sqlConnection);
+                    sqlCommand.Parameters.AddWithValue("@HOT_CODIGO", habitacion.HOT_CODIGO);
+                    sqlCommand.Parameters.AddWithValue("@HAB_NUMERO", habitacion.HAB_NUMERO);
+                    sqlCommand.Parameters.AddWithValue("@HAB_CAPACIDAD", habitacion.HAB_CAPACIDAD);
+                    sqlCommand.Parameters.AddWithValue("@HAB_TIPO", habitacion.HAB_TIPO);
+                    sqlCommand.Parameters.AddWithValue("@HAB_DESCRIPCION", habitacion.HAB_DESCRIPCION);
+                    sqlCommand.Parameters.AddWithValue("@HAB_ESTADO", habitacion.HAB_ESTADO);
+                    sqlCommand.Parameters.AddWithValue("@HAB_PRECIO", habitacion.HAB_PRECIO);
 
-                int filasAfectadas = sqlCommand.ExecuteNonQuery();
-                if (filasAfectadas > 0)
-                    return true;
+                    sqlConnection.Open();
 
-                sqlConnection.Close();
+                    int filasAfectadas = sqlCommand.ExecuteNonQuery();
+                    if (filasAfectadas > 0)
+                        return true;
+
+                    sqlConnection.Close();
+                }
+
+                return resultado;
             }
+            catch (Exception)
+            {
 
-            return resultado;
+                return false;
+            }
         }
 
         [HttpPut]
@@ -138,11 +150,13 @@ namespace WebApiSegura.Controllers
 
         private bool ActualizarHabitacion(Habitacion habitacion)
         {
-            bool resultado = false;
-
-            using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
+            try
             {
-                SqlCommand sqlCommand = new SqlCommand(@"UPDATE HABITACION 
+                bool resultado = false;
+
+                using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
+                {
+                    SqlCommand sqlCommand = new SqlCommand(@"UPDATE HABITACION 
                                                        SET 
                                                            HOT_CODIGO = @HOT_CODIGO, 
                                                            HAB_NUMERO = @HAB_NUMERO,
@@ -152,26 +166,32 @@ namespace WebApiSegura.Controllers
                                                            HAB_ESTADO = @HAB_ESTADO,
                                                            HAB_PRECIO = @HAB_PRECIO
                                                            WHERE HAB_CODIGO = @HAB_CODIGO", sqlConnection);
-                sqlCommand.Parameters.AddWithValue("@HAB_CODIGO", habitacion.HAB_CODIGO);
-                sqlCommand.Parameters.AddWithValue("@HOT_CODIGO", habitacion.HOT_CODIGO);
-                sqlCommand.Parameters.AddWithValue("@HAB_NUMERO", habitacion.HAB_NUMERO);
-                sqlCommand.Parameters.AddWithValue("@HAB_CAPACIDAD", habitacion.HAB_CAPACIDAD);
-                sqlCommand.Parameters.AddWithValue("@HAB_TIPO", habitacion.HAB_TIPO);
-                sqlCommand.Parameters.AddWithValue("@HAB_DESCRIPCION", habitacion.HAB_DESCRIPCION);
-                sqlCommand.Parameters.AddWithValue("@HAB_ESTADO", habitacion.HAB_ESTADO);
-                sqlCommand.Parameters.AddWithValue("@HAB_PRECIO", habitacion.HAB_PRECIO);
+                    sqlCommand.Parameters.AddWithValue("@HAB_CODIGO", habitacion.HAB_CODIGO);
+                    sqlCommand.Parameters.AddWithValue("@HOT_CODIGO", habitacion.HOT_CODIGO);
+                    sqlCommand.Parameters.AddWithValue("@HAB_NUMERO", habitacion.HAB_NUMERO);
+                    sqlCommand.Parameters.AddWithValue("@HAB_CAPACIDAD", habitacion.HAB_CAPACIDAD);
+                    sqlCommand.Parameters.AddWithValue("@HAB_TIPO", habitacion.HAB_TIPO);
+                    sqlCommand.Parameters.AddWithValue("@HAB_DESCRIPCION", habitacion.HAB_DESCRIPCION);
+                    sqlCommand.Parameters.AddWithValue("@HAB_ESTADO", habitacion.HAB_ESTADO);
+                    sqlCommand.Parameters.AddWithValue("@HAB_PRECIO", habitacion.HAB_PRECIO);
 
 
-                sqlConnection.Open();
+                    sqlConnection.Open();
 
-                int filasAfectadas = sqlCommand.ExecuteNonQuery();
-                if (filasAfectadas > 0)
-                    return true;
+                    int filasAfectadas = sqlCommand.ExecuteNonQuery();
+                    if (filasAfectadas > 0)
+                        return true;
 
-                sqlConnection.Close();
+                    sqlConnection.Close();
+                }
+
+                return resultado;
             }
+            catch (Exception)
+            {
 
-            return resultado;
+                return false;
+            }
         }
 
         [HttpDelete]
@@ -186,25 +206,33 @@ namespace WebApiSegura.Controllers
 
         private bool EliminarHabitacion(int id)
         {
-            bool resultado = false;
-
-            using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
+            try
             {
-                SqlCommand sqlCommand = new SqlCommand(@"DELETE HABITACION 
+                bool resultado = false;
+
+                using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
+                {
+                    SqlCommand sqlCommand = new SqlCommand(@"DELETE HABITACION 
                                                        WHERE HAB_CODIGO = @HAB_CODIGO", sqlConnection);
-                sqlCommand.Parameters.AddWithValue("@HAB_CODIGO", id);
+                    sqlCommand.Parameters.AddWithValue("@HAB_CODIGO", id);
 
 
-                sqlConnection.Open();
+                    sqlConnection.Open();
 
-                int filasAfectadas = sqlCommand.ExecuteNonQuery();
-                if (filasAfectadas > 0)
-                    return true;
+                    int filasAfectadas = sqlCommand.ExecuteNonQuery();
+                    if (filasAfectadas > 0)
+                        return true;
 
-                sqlConnection.Close();
+                    sqlConnection.Close();
+                }
+
+                return resultado;
             }
+            catch (Exception)
+            {
 
-            return resultado;
+                return false;
+            }
         }
     }
 }

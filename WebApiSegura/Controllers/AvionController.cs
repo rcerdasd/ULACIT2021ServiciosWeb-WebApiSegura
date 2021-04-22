@@ -17,9 +17,10 @@ namespace WebApiSegura.Controllers
         [HttpGet]
         public IHttpActionResult GetId(int id)
         {
-            Avion avion = new Avion();
+            
             try
             {
+                Avion avion = new Avion();
                 using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
                 {
                     SqlCommand sqlCommand = new SqlCommand(@"SELECT AVI_CODIGO, AER_CODIGO, AVI_CANT_ASIENTOS, AVI_MODELO, AVI_ESTADO, AVI_DESCRIPCION FROM AVION WHERE AVI_CODIGO = @AVI_CODIGO", sqlConnection);
@@ -38,21 +39,23 @@ namespace WebApiSegura.Controllers
                     }
                     sqlConnection.Close();
                 }
+                return Ok(avion);
             }
             catch (Exception e)
             {
                 return InternalServerError(e);
             }
-            return Ok(avion);
+            
         }
 
         [HttpGet]
         public IHttpActionResult GetAll()
         {
-            List<Avion> aviones = new List<Avion>();
+            
 
             try
             {
+                List<Avion> aviones = new List<Avion>();
                 using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
                 {
                     SqlCommand sqlCommand = new SqlCommand(@"SELECT AVI_CODIGO, AER_CODIGO, AVI_CANT_ASIENTOS, AVI_MODELO, AVI_ESTADO, AVI_DESCRIPCION FROM AVION", sqlConnection);
@@ -76,13 +79,14 @@ namespace WebApiSegura.Controllers
                     
                     sqlConnection.Close();
                 }
+                return Ok(aviones);
             }
             catch (Exception e)
             {
                 return InternalServerError(e);
             }
             
-            return Ok(aviones);
+            
         }
 
         [HttpPost]
@@ -97,27 +101,35 @@ namespace WebApiSegura.Controllers
 
         private bool RegistrarAvion(Avion avion)
         {
-            bool resultado = false;
-
-            using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
+            try
             {
-                SqlCommand sqlCommand = new SqlCommand(@"INSERT INTO AVION (AER_CODIGO, AVI_CANT_ASIENTOS, AVI_MODELO, AVI_ESTADO, AVI_DESCRIPCION) VALUES (@AER_CODIGO, @AVI_CANT_ASIENTOS, @AVI_MODELO, @AVI_ESTADO, @AVI_DESCRIPCION)", sqlConnection);
-                sqlCommand.Parameters.AddWithValue("@AER_CODIGO", avion.AER_CODIGO);
-                sqlCommand.Parameters.AddWithValue("@AVI_CANT_ASIENTOS", avion.AVI_CANT_ASIENTOS);
-                sqlCommand.Parameters.AddWithValue("@AVI_MODELO", avion.AVI_MODELO);
-                sqlCommand.Parameters.AddWithValue("@AVI_ESTADO", avion.AVI_ESTADO);
-                sqlCommand.Parameters.AddWithValue("@AVI_DESCRIPCION", avion.AVI_DESCRIPCION);
+                bool resultado = false;
 
-                sqlConnection.Open();
+                using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
+                {
+                    SqlCommand sqlCommand = new SqlCommand(@"INSERT INTO AVION (AER_CODIGO, AVI_CANT_ASIENTOS, AVI_MODELO, AVI_ESTADO, AVI_DESCRIPCION) VALUES (@AER_CODIGO, @AVI_CANT_ASIENTOS, @AVI_MODELO, @AVI_ESTADO, @AVI_DESCRIPCION)", sqlConnection);
+                    sqlCommand.Parameters.AddWithValue("@AER_CODIGO", avion.AER_CODIGO);
+                    sqlCommand.Parameters.AddWithValue("@AVI_CANT_ASIENTOS", avion.AVI_CANT_ASIENTOS);
+                    sqlCommand.Parameters.AddWithValue("@AVI_MODELO", avion.AVI_MODELO);
+                    sqlCommand.Parameters.AddWithValue("@AVI_ESTADO", avion.AVI_ESTADO);
+                    sqlCommand.Parameters.AddWithValue("@AVI_DESCRIPCION", avion.AVI_DESCRIPCION);
 
-                int filasAfectadas = sqlCommand.ExecuteNonQuery();
-                if (filasAfectadas > 0)
-                    return true;
+                    sqlConnection.Open();
 
-                sqlConnection.Close();
+                    int filasAfectadas = sqlCommand.ExecuteNonQuery();
+                    if (filasAfectadas > 0)
+                        return true;
+
+                    sqlConnection.Close();
+                }
+
+                return resultado;
             }
+            catch (Exception)
+            {
 
-            return resultado;
+                return false;
+            }
         }
 
 
@@ -133,11 +145,13 @@ namespace WebApiSegura.Controllers
 
         private bool ActualizarAvion(Avion avion)
         {
-            bool resultado = false;
-
-            using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
+            try
             {
-                SqlCommand sqlCommand = new SqlCommand(@"UPDATE AVION 
+                bool resultado = false;
+
+                using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
+                {
+                    SqlCommand sqlCommand = new SqlCommand(@"UPDATE AVION 
                                                        SET 
                                                            AER_CODIGO = @AER_CODIGO, 
                                                            AVI_CANT_ASIENTOS = @AVI_CANT_ASIENTOS,
@@ -145,23 +159,29 @@ namespace WebApiSegura.Controllers
                                                            AVI_ESTADO = @AVI_ESTADO,
                                                            AVI_DESCRIPCION = @AVI_DESCRIPCION
                                                        WHERE AVI_CODIGO = @AVI_CODIGO", sqlConnection);
-                sqlCommand.Parameters.AddWithValue("@AVI_CODIGO", avion.AVI_CODIGO);
-                sqlCommand.Parameters.AddWithValue("@AER_CODIGO", avion.AER_CODIGO);
-                sqlCommand.Parameters.AddWithValue("@AVI_CANT_ASIENTOS", avion.AVI_CANT_ASIENTOS);
-                sqlCommand.Parameters.AddWithValue("@AVI_MODELO", avion.AVI_MODELO);
-                sqlCommand.Parameters.AddWithValue("@AVI_ESTADO", avion.AVI_ESTADO);
-                sqlCommand.Parameters.AddWithValue("@AVI_DESCRIPCION", avion.AVI_DESCRIPCION);
+                    sqlCommand.Parameters.AddWithValue("@AVI_CODIGO", avion.AVI_CODIGO);
+                    sqlCommand.Parameters.AddWithValue("@AER_CODIGO", avion.AER_CODIGO);
+                    sqlCommand.Parameters.AddWithValue("@AVI_CANT_ASIENTOS", avion.AVI_CANT_ASIENTOS);
+                    sqlCommand.Parameters.AddWithValue("@AVI_MODELO", avion.AVI_MODELO);
+                    sqlCommand.Parameters.AddWithValue("@AVI_ESTADO", avion.AVI_ESTADO);
+                    sqlCommand.Parameters.AddWithValue("@AVI_DESCRIPCION", avion.AVI_DESCRIPCION);
 
-                sqlConnection.Open();
+                    sqlConnection.Open();
 
-                int filasAfectadas = sqlCommand.ExecuteNonQuery();
-                if (filasAfectadas > 0)
-                    return true;
+                    int filasAfectadas = sqlCommand.ExecuteNonQuery();
+                    if (filasAfectadas > 0)
+                        return true;
 
-                sqlConnection.Close();
+                    sqlConnection.Close();
+                }
+
+                return resultado;
             }
+            catch (Exception)
+            {
 
-            return resultado;
+                return false;
+            }
         }
 
 
@@ -177,25 +197,33 @@ namespace WebApiSegura.Controllers
 
         private bool EliminarAvion(int id)
         {
-            bool resultado = false;
-
-            using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
+            try
             {
-                SqlCommand sqlCommand = new SqlCommand(@"DELETE AVION 
+                bool resultado = false;
+
+                using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
+                {
+                    SqlCommand sqlCommand = new SqlCommand(@"DELETE AVION 
                                                        WHERE AVI_CODIGO = @AVI_CODIGO", sqlConnection);
-                sqlCommand.Parameters.AddWithValue("@AVI_CODIGO", id);
+                    sqlCommand.Parameters.AddWithValue("@AVI_CODIGO", id);
 
 
-                sqlConnection.Open();
+                    sqlConnection.Open();
 
-                int filasAfectadas = sqlCommand.ExecuteNonQuery();
-                if (filasAfectadas > 0)
-                    return true;
+                    int filasAfectadas = sqlCommand.ExecuteNonQuery();
+                    if (filasAfectadas > 0)
+                        return true;
 
-                sqlConnection.Close();
+                    sqlConnection.Close();
+                }
+
+                return resultado;
             }
+            catch (Exception)
+            {
 
-            return resultado;
+                return false;
+            }
         }
     }
 }

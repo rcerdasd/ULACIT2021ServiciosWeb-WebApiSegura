@@ -96,26 +96,34 @@ namespace WebApiSegura.Controllers
 
         private bool RegistrarRentacar(Rentacar rentacar)
         {
-            bool resultado = false;
-
-            using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
+            try
             {
-                SqlCommand sqlCommand = new SqlCommand(@"INSERT INTO RENTACAR (REN_NOMBRE, REN_PAIS, REN_TELEFONO, REN_EMAIL) VALUES (@REN_NOMBRE, @REN_PAIS, @REN_TELEFONO, @REN_EMAIL)", sqlConnection);
-                sqlCommand.Parameters.AddWithValue("@REN_NOMBRE", rentacar.REN_NOMBRE);
-                sqlCommand.Parameters.AddWithValue("@REN_PAIS", rentacar.REN_PAIS);
-                sqlCommand.Parameters.AddWithValue("@REN_TELEFONO", rentacar.REN_TELEFONO);
-                sqlCommand.Parameters.AddWithValue("@REN_EMAIL", rentacar.REN_EMAIL);
+                bool resultado = false;
 
-                sqlConnection.Open();
+                using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
+                {
+                    SqlCommand sqlCommand = new SqlCommand(@"INSERT INTO RENTACAR (REN_NOMBRE, REN_PAIS, REN_TELEFONO, REN_EMAIL) VALUES (@REN_NOMBRE, @REN_PAIS, @REN_TELEFONO, @REN_EMAIL)", sqlConnection);
+                    sqlCommand.Parameters.AddWithValue("@REN_NOMBRE", rentacar.REN_NOMBRE);
+                    sqlCommand.Parameters.AddWithValue("@REN_PAIS", rentacar.REN_PAIS);
+                    sqlCommand.Parameters.AddWithValue("@REN_TELEFONO", rentacar.REN_TELEFONO);
+                    sqlCommand.Parameters.AddWithValue("@REN_EMAIL", rentacar.REN_EMAIL);
 
-                int filasAfectadas = sqlCommand.ExecuteNonQuery();
-                if (filasAfectadas > 0)
-                    return true;
+                    sqlConnection.Open();
 
-                sqlConnection.Close();
+                    int filasAfectadas = sqlCommand.ExecuteNonQuery();
+                    if (filasAfectadas > 0)
+                        return true;
+
+                    sqlConnection.Close();
+                }
+
+                return resultado;
             }
+            catch
+            {
 
-            return resultado;
+                return false;
+            }
         }
 
         [HttpPut]
@@ -130,32 +138,40 @@ namespace WebApiSegura.Controllers
 
         private bool ActualizarRentacar(Rentacar rentacar)
         {
-            bool resultado = false;
-
-            using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
+            try
             {
-                SqlCommand sqlCommand = new SqlCommand(@"UPDATE RENTACAR 
+                bool resultado = false;
+
+                using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
+                {
+                    SqlCommand sqlCommand = new SqlCommand(@"UPDATE RENTACAR 
                                                        SET 
                                                            REN_NOMBRE = @REN_NOMBRE, 
                                                            REN_PAIS = @REN_PAIS,
                                                            REN_TELEFONO = @REN_TELEFONO, 
                                                            REN_EMAIL = @REN_EMAIL
                                                        WHERE REN_CODIGO = @REN_CODIGO", sqlConnection);
-                sqlCommand.Parameters.AddWithValue("@REN_CODIGO", rentacar.REN_CODIGO);
-                sqlCommand.Parameters.AddWithValue("@REN_NOMBRE", rentacar.REN_NOMBRE);
-                sqlCommand.Parameters.AddWithValue("@REN_PAIS", rentacar.REN_PAIS);
-                sqlCommand.Parameters.AddWithValue("@REN_TELEFONO", rentacar.REN_TELEFONO);
-                sqlCommand.Parameters.AddWithValue("@REN_EMAIL", rentacar.REN_EMAIL);
-                sqlConnection.Open();
+                    sqlCommand.Parameters.AddWithValue("@REN_CODIGO", rentacar.REN_CODIGO);
+                    sqlCommand.Parameters.AddWithValue("@REN_NOMBRE", rentacar.REN_NOMBRE);
+                    sqlCommand.Parameters.AddWithValue("@REN_PAIS", rentacar.REN_PAIS);
+                    sqlCommand.Parameters.AddWithValue("@REN_TELEFONO", rentacar.REN_TELEFONO);
+                    sqlCommand.Parameters.AddWithValue("@REN_EMAIL", rentacar.REN_EMAIL);
+                    sqlConnection.Open();
 
-                int filasAfectadas = sqlCommand.ExecuteNonQuery();
-                if (filasAfectadas > 0)
-                    return true;
+                    int filasAfectadas = sqlCommand.ExecuteNonQuery();
+                    if (filasAfectadas > 0)
+                        return true;
 
-                sqlConnection.Close();
+                    sqlConnection.Close();
+                }
+
+                return resultado;
             }
+            catch (Exception)
+            {
 
-            return resultado;
+                return false;
+            }
         }
 
         [HttpDelete]
