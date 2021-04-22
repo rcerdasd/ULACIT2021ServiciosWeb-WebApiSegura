@@ -180,6 +180,7 @@
     <Compile Include="Controllers\AerolineaController.cs" />
     <Compile Include="Controllers\HotelController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\PaqueteVehiculoController.cs" />
     <Compile Include="Controllers\RentacarController.cs" />
     <Compile Include="Controllers\ReservaAvionController.cs" />
     <Compile Include="Controllers\ReservaHotelController.cs" />
@@ -365,6 +366,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\PaqueteVehiculo\" />
     <Folder Include="Views\ReservaVehiculo\" />
   </ItemGroup>
   <ItemGroup>

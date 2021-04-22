@@ -12,7 +12,7 @@ namespace WebApiSegura.Controllers
 {
     //[Authorize]
     [AllowAnonymous]
-    [RoutePrefix("api/paquete-vehiculo")]
+    [RoutePrefix("api/paquetevehiculo")]
     public class PaqueteVehiculoController : ApiController
     {
         [HttpGet]
@@ -101,26 +101,34 @@ namespace WebApiSegura.Controllers
         }
         private bool RegistrarPaqueteVehiculo(PaqueteVehiculo paquete)
         {
-            bool resultado = false;
-
-            using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
+            try
             {
-                SqlCommand sqlCommand = new SqlCommand(@"INSERT INTO PAQUETE_VEHICULO (VEH_CODIGO, PAQ_SEGURO, PAQ_BICICLETA, PAQ_DESCRIPCION) VALUES (@VEH_CODIGO, @PAQ_SEGURO, @PAQ_BICICLETA, @PAQ_DESCRIPCION)", sqlConnection);
-                sqlCommand.Parameters.AddWithValue("@VEH_CODIGO", paquete.VEH_CODIGO);
-                sqlCommand.Parameters.AddWithValue("@PAQ_SEGURO", paquete.PAQ_SEGURO);
-                sqlCommand.Parameters.AddWithValue("@PAQ_BICICLETA", paquete.PAQ_BICICLETA);
-                sqlCommand.Parameters.AddWithValue("@PAQ_DESCRIPCION", paquete.PAQ_DESCRIPCION);
+                bool resultado = false;
 
-                sqlConnection.Open();
+                using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
+                {
+                    SqlCommand sqlCommand = new SqlCommand(@"INSERT INTO PAQUETE_VEHICULO (VEH_CODIGO, PAQ_SEGURO, PAQ_BICICLETA, PAQ_DESCRIPCION) VALUES (@VEH_CODIGO, @PAQ_SEGURO, @PAQ_BICICLETA, @PAQ_DESCRIPCION)", sqlConnection);
+                    sqlCommand.Parameters.AddWithValue("@VEH_CODIGO", paquete.VEH_CODIGO);
+                    sqlCommand.Parameters.AddWithValue("@PAQ_SEGURO", paquete.PAQ_SEGURO);
+                    sqlCommand.Parameters.AddWithValue("@PAQ_BICICLETA", paquete.PAQ_BICICLETA);
+                    sqlCommand.Parameters.AddWithValue("@PAQ_DESCRIPCION", paquete.PAQ_DESCRIPCION);
 
-                int filasAfectadas = sqlCommand.ExecuteNonQuery();
-                if (filasAfectadas > 0)
-                    return true;
+                    sqlConnection.Open();
 
-                sqlConnection.Close();
+                    int filasAfectadas = sqlCommand.ExecuteNonQuery();
+                    if (filasAfectadas > 0)
+                        return true;
+
+                    sqlConnection.Close();
+                }
+
+                return resultado;
             }
+            catch (Exception)
+            {
 
-            return resultado;
+                return false;
+            }
         }
 
         [HttpPut]
@@ -135,35 +143,43 @@ namespace WebApiSegura.Controllers
 
         private bool ActualizarPaqueteVehiculo(PaqueteVehiculo paquete)
         {
-            bool resultado = false;
-
-            using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
+            try
             {
+                bool resultado = false;
 
-                SqlCommand sqlCommand = new SqlCommand(@"UPDATE PAQUETE_VEHICULO 
+                using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
+                {
+
+                    SqlCommand sqlCommand = new SqlCommand(@"UPDATE PAQUETE_VEHICULO 
                                                        SET 
                                                            VEH_CODIGO = @VEH_CODIGO, 
                                                            PAQ_SEGURO = @PAQ_SEGURO,
                                                            PAQ_BICICLETA = @PAQ_BICICLETA, 
                                                            PAQ_DESCRIPCION = @PAQ_DESCRIPCION
                                                        WHERE PAQ_VEH_CODIGO = @PAQ_VEH_CODIGO", sqlConnection);
-                sqlCommand.Parameters.AddWithValue("@PAQ_VEH_CODIGO", paquete.PAQ_VEH_CODIGO);
-                sqlCommand.Parameters.AddWithValue("@VEH_CODIGO", paquete.VEH_CODIGO);
-                sqlCommand.Parameters.AddWithValue("@PAQ_SEGURO", paquete.PAQ_SEGURO);
-                sqlCommand.Parameters.AddWithValue("@PAQ_BICICLETA", paquete.PAQ_BICICLETA);
-                sqlCommand.Parameters.AddWithValue("@PAQ_DESCRIPCION", paquete.PAQ_DESCRIPCION);
+                    sqlCommand.Parameters.AddWithValue("@PAQ_VEH_CODIGO", paquete.PAQ_VEH_CODIGO);
+                    sqlCommand.Parameters.AddWithValue("@VEH_CODIGO", paquete.VEH_CODIGO);
+                    sqlCommand.Parameters.AddWithValue("@PAQ_SEGURO", paquete.PAQ_SEGURO);
+                    sqlCommand.Parameters.AddWithValue("@PAQ_BICICLETA", paquete.PAQ_BICICLETA);
+                    sqlCommand.Parameters.AddWithValue("@PAQ_DESCRIPCION", paquete.PAQ_DESCRIPCION);
 
 
-                sqlConnection.Open();
+                    sqlConnection.Open();
 
-                int filasAfectadas = sqlCommand.ExecuteNonQuery();
-                if (filasAfectadas > 0)
-                    return true;
+                    int filasAfectadas = sqlCommand.ExecuteNonQuery();
+                    if (filasAfectadas > 0)
+                        return true;
 
-                sqlConnection.Close();
+                    sqlConnection.Close();
+                }
+
+                return resultado;
             }
+            catch (Exception)
+            {
 
-            return resultado;
+                return false;
+            }
         }
 
         [HttpDelete]
@@ -172,31 +188,39 @@ namespace WebApiSegura.Controllers
             if (id < 1)
                 return BadRequest();
             if (EliminarPaqueteVehiculo(id))
-                return Ok();
+                return Ok(id);
             else return InternalServerError();
         }
 
         private bool EliminarPaqueteVehiculo(int id)
         {
-            bool resultado = false;
-
-            using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
+            try
             {
-                SqlCommand sqlCommand = new SqlCommand(@"DELETE PAQUETE_VEHICULO 
+                bool resultado = false;
+
+                using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
+                {
+                    SqlCommand sqlCommand = new SqlCommand(@"DELETE PAQUETE_VEHICULO 
                                                        WHERE PAQ_VEH_CODIGO = @PAQ_VEH_CODIGO", sqlConnection);
-                sqlCommand.Parameters.AddWithValue("@PAQ_VEH_CODIGO", id);
+                    sqlCommand.Parameters.AddWithValue("@PAQ_VEH_CODIGO", id);
 
 
-                sqlConnection.Open();
+                    sqlConnection.Open();
 
-                int filasAfectadas = sqlCommand.ExecuteNonQuery();
-                if (filasAfectadas > 0)
-                    return true;
+                    int filasAfectadas = sqlCommand.ExecuteNonQuery();
+                    if (filasAfectadas > 0)
+                        return true;
 
-                sqlConnection.Close();
+                    sqlConnection.Close();
+                }
+
+                return resultado;
             }
+            catch (Exception)
+            {
 
-            return resultado;
+                return false;
+            }
         }
     }
 }
