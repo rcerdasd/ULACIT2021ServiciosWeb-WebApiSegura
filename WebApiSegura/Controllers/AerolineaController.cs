@@ -95,26 +95,35 @@ namespace WebApiSegura.Controllers
 
         private bool RegistrarAerolinea(Aerolinea aerolinea)
         {
-            bool resultado = false;
-
-            using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
+            try
             {
-                SqlCommand sqlCommand = new SqlCommand(@"INSERT INTO AEROLINEA (AER_NOMBRE, AER_PAIS, AER_TELEFONO, AER_EMAIL) VALUES (@AER_NOMBRE, @AER_PAIS, @AER_TELEFONO, @AER_EMAIL)", sqlConnection);
-                sqlCommand.Parameters.AddWithValue("@AER_NOMBRE", aerolinea.AER_NOMBRE);
-                sqlCommand.Parameters.AddWithValue("@AER_PAIS", aerolinea.AER_PAIS);
-                sqlCommand.Parameters.AddWithValue("@AER_TELEFONO", aerolinea.AER_TELEFONO);
-                sqlCommand.Parameters.AddWithValue("@AER_EMAIL", aerolinea.AER_EMAIL);
 
-                sqlConnection.Open();
+                bool resultado = false;
 
-                int filasAfectadas = sqlCommand.ExecuteNonQuery();
-                if (filasAfectadas > 0)
-                    return true;
+                using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
+                {
+                    SqlCommand sqlCommand = new SqlCommand(@"INSERT INTO AEROLINEA (AER_NOMBRE, AER_PAIS, AER_TELEFONO, AER_EMAIL) VALUES (@AER_NOMBRE, @AER_PAIS, @AER_TELEFONO, @AER_EMAIL)", sqlConnection);
+                    sqlCommand.Parameters.AddWithValue("@AER_NOMBRE", aerolinea.AER_NOMBRE);
+                    sqlCommand.Parameters.AddWithValue("@AER_PAIS", aerolinea.AER_PAIS);
+                    sqlCommand.Parameters.AddWithValue("@AER_TELEFONO", aerolinea.AER_TELEFONO);
+                    sqlCommand.Parameters.AddWithValue("@AER_EMAIL", aerolinea.AER_EMAIL);
 
-                sqlConnection.Close();
+                    sqlConnection.Open();
+
+                    int filasAfectadas = sqlCommand.ExecuteNonQuery();
+                    if (filasAfectadas > 0)
+                        return true;
+
+                    sqlConnection.Close();
+                }
+
+                return resultado;
             }
+            catch (Exception)
+            {
 
-            return resultado;
+                return false;
+            }
         }
 
 
@@ -130,33 +139,41 @@ namespace WebApiSegura.Controllers
 
         private bool ActualizarAerolinea(Aerolinea aerolinea)
         {
-            bool resultado = false;
-
-            using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
+            try
             {
-                SqlCommand sqlCommand = new SqlCommand(@"UPDATE AEROLINEA 
+                bool resultado = false;
+
+                using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
+                {
+                    SqlCommand sqlCommand = new SqlCommand(@"UPDATE AEROLINEA 
                                                        SET 
                                                            AER_NOMBRE = @AER_NOMBRE, 
                                                            AER_PAIS = @AER_PAIS,
                                                            AER_TELEFONO = @AER_TELEFONO, 
                                                            AER_EMAIL = @AER_EMAIL
                                                        WHERE AER_CODIGO = @AER_CODIGO", sqlConnection);
-                sqlCommand.Parameters.AddWithValue("@AER_CODIGO", aerolinea.AER_CODIGO);
-                sqlCommand.Parameters.AddWithValue("@AER_NOMBRE", aerolinea.AER_NOMBRE);
-                sqlCommand.Parameters.AddWithValue("@AER_PAIS", aerolinea.AER_PAIS);
-                sqlCommand.Parameters.AddWithValue("@AER_TELEFONO", aerolinea.AER_TELEFONO);
-                sqlCommand.Parameters.AddWithValue("@AER_EMAIL", aerolinea.AER_EMAIL);
+                    sqlCommand.Parameters.AddWithValue("@AER_CODIGO", aerolinea.AER_CODIGO);
+                    sqlCommand.Parameters.AddWithValue("@AER_NOMBRE", aerolinea.AER_NOMBRE);
+                    sqlCommand.Parameters.AddWithValue("@AER_PAIS", aerolinea.AER_PAIS);
+                    sqlCommand.Parameters.AddWithValue("@AER_TELEFONO", aerolinea.AER_TELEFONO);
+                    sqlCommand.Parameters.AddWithValue("@AER_EMAIL", aerolinea.AER_EMAIL);
 
-                sqlConnection.Open();
+                    sqlConnection.Open();
 
-                int filasAfectadas = sqlCommand.ExecuteNonQuery();
-                if (filasAfectadas > 0)
-                    return true;
+                    int filasAfectadas = sqlCommand.ExecuteNonQuery();
+                    if (filasAfectadas > 0)
+                        return true;
 
-                sqlConnection.Close();
+                    sqlConnection.Close();
+                }
+
+                return resultado;
             }
+            catch (Exception)
+            {
 
-            return resultado;
+                return false;
+            }
         }
 
 
@@ -172,25 +189,33 @@ namespace WebApiSegura.Controllers
 
         private bool EliminarAerolinea(int id)
         {
-            bool resultado = false;
-
-            using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
+            try
             {
-                SqlCommand sqlCommand = new SqlCommand(@"DELETE AEROLINEA 
+                bool resultado = false;
+
+                using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
+                {
+                    SqlCommand sqlCommand = new SqlCommand(@"DELETE AEROLINEA 
                                                        WHERE AER_CODIGO = @AER_CODIGO", sqlConnection);
-                sqlCommand.Parameters.AddWithValue("@AER_CODIGO", id);
+                    sqlCommand.Parameters.AddWithValue("@AER_CODIGO", id);
 
 
-                sqlConnection.Open();
+                    sqlConnection.Open();
 
-                int filasAfectadas = sqlCommand.ExecuteNonQuery();
-                if (filasAfectadas > 0)
-                    return true;
+                    int filasAfectadas = sqlCommand.ExecuteNonQuery();
+                    if (filasAfectadas > 0)
+                        return true;
 
-                sqlConnection.Close();
+                    sqlConnection.Close();
+                }
+
+                return resultado;
             }
+            catch (Exception)
+            {
 
-            return resultado;
+                return false;
+            }
         }
     }
 }

@@ -18,9 +18,10 @@ namespace WebApiSegura.Controllers
         [HttpGet]
         public IHttpActionResult GetVehId(int id)
         {
-            Vehiculo vehiculo = new Vehiculo();
+            
             try
             {
+                Vehiculo vehiculo = new Vehiculo();
                 using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
                 {
                     SqlCommand sqlCommand = new SqlCommand(@"SELECT VEH_CODIGO, REN_CODIGO, VEH_CANT_PASAJEROS, VEH_MODELO, VEH_ESTADO, VEH_DESCRIPCION FROM VEHICULO WHERE VEH_CODIGO = @VEH_CODIGO", sqlConnection);
@@ -39,21 +40,23 @@ namespace WebApiSegura.Controllers
                     }
                     sqlConnection.Close();
                 }
+                return Ok(vehiculo);
             }
             catch (Exception e)
             {
                 return InternalServerError(e);
             }
-            return Ok(vehiculo);
+           
         }
 
         [HttpGet]
         public IHttpActionResult GetVehAll()
         {
-            List<Vehiculo> vehiculos = new List<Vehiculo>();
+            
 
             try
             {
+                List<Vehiculo> vehiculos = new List<Vehiculo>();
                 using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
                 {
                     SqlCommand sqlCommand = new SqlCommand(@"SELECT VEH_CODIGO, REN_CODIGO, VEH_CANT_PASAJEROS, VEH_MODELO, VEH_ESTADO, VEH_DESCRIPCION FROM VEHICULO", sqlConnection);
@@ -76,13 +79,14 @@ namespace WebApiSegura.Controllers
 
                     sqlConnection.Close();
                 }
+                return Ok(vehiculos);
             }
             catch (Exception e)
             {
                 return InternalServerError(e);
             }
 
-            return Ok(vehiculos);
+            
         }
 
         [HttpPost]
@@ -97,27 +101,35 @@ namespace WebApiSegura.Controllers
 
         private bool RegistrarVehiculo(Vehiculo vehiculo)
         {
-            bool resultado = false;
-
-            using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
+            try
             {
-                SqlCommand sqlCommand = new SqlCommand(@"INSERT INTO VEHICULO (REN_CODIGO, VEH_CANT_PASAJEROS, VEH_MODELO, VEH_ESTADO, VEH_DESCRIPCION) VALUES (@REN_CODIGO, @VEH_CANT_PASAJEROS, @VEH_MODELO, @VEH_ESTADO, @VEH_DESCRIPCION)", sqlConnection);
-                sqlCommand.Parameters.AddWithValue("@REN_CODIGO", vehiculo.REN_CODIGO);
-                sqlCommand.Parameters.AddWithValue("@VEH_CANT_PASAJEROS", vehiculo.VEH_CANT_PASAJEROS);
-                sqlCommand.Parameters.AddWithValue("@VEH_MODELO", vehiculo.VEH_MODELO);
-                sqlCommand.Parameters.AddWithValue("@VEH_ESTADO", vehiculo.VEH_ESTADO);
-                sqlCommand.Parameters.AddWithValue("@VEH_DESCRIPCION", vehiculo.VEH_DESCRIPCION);
+                bool resultado = false;
 
-                sqlConnection.Open();
+                using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
+                {
+                    SqlCommand sqlCommand = new SqlCommand(@"INSERT INTO VEHICULO (REN_CODIGO, VEH_CANT_PASAJEROS, VEH_MODELO, VEH_ESTADO, VEH_DESCRIPCION) VALUES (@REN_CODIGO, @VEH_CANT_PASAJEROS, @VEH_MODELO, @VEH_ESTADO, @VEH_DESCRIPCION)", sqlConnection);
+                    sqlCommand.Parameters.AddWithValue("@REN_CODIGO", vehiculo.REN_CODIGO);
+                    sqlCommand.Parameters.AddWithValue("@VEH_CANT_PASAJEROS", vehiculo.VEH_CANT_PASAJEROS);
+                    sqlCommand.Parameters.AddWithValue("@VEH_MODELO", vehiculo.VEH_MODELO);
+                    sqlCommand.Parameters.AddWithValue("@VEH_ESTADO", vehiculo.VEH_ESTADO);
+                    sqlCommand.Parameters.AddWithValue("@VEH_DESCRIPCION", vehiculo.VEH_DESCRIPCION);
 
-                int filasAfectadas = sqlCommand.ExecuteNonQuery();
-                if (filasAfectadas > 0)
-                    return true;
+                    sqlConnection.Open();
 
-                sqlConnection.Close();
+                    int filasAfectadas = sqlCommand.ExecuteNonQuery();
+                    if (filasAfectadas > 0)
+                        return true;
+
+                    sqlConnection.Close();
+                }
+
+                return resultado;
             }
+            catch (Exception)
+            {
 
-            return resultado;
+                return false;
+            }
         }
 
         [HttpPut]
@@ -132,11 +144,13 @@ namespace WebApiSegura.Controllers
 
         private bool ActualizarVehiculo(Vehiculo vehiculo)
         {
-            bool resultado = false;
-
-            using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
+            try
             {
-                SqlCommand sqlCommand = new SqlCommand(@"UPDATE VEHICULO 
+                bool resultado = false;
+
+                using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
+                {
+                    SqlCommand sqlCommand = new SqlCommand(@"UPDATE VEHICULO 
                                                        SET 
                                                            REN_CODIGO = @REN_CODIGO, 
                                                            VEH_CANT_PASAJEROS = @VEH_CANT_PASAJEROS,
@@ -144,22 +158,28 @@ namespace WebApiSegura.Controllers
                                                            VEH_ESTADO = @VEH_ESTADO,
                                                            VEH_DESCRIPCION = @VEH_DESCRIPCION
                                                        WHERE VEH_CODIGO = @VEH_CODIGO", sqlConnection);
-                sqlCommand.Parameters.AddWithValue("@VEH_CODIGO", vehiculo.VEH_CODIGO);
-                sqlCommand.Parameters.AddWithValue("@REN_CODIGO", vehiculo.REN_CODIGO);
-                sqlCommand.Parameters.AddWithValue("@VEH_CANT_PASAJEROS", vehiculo.VEH_CANT_PASAJEROS);
-                sqlCommand.Parameters.AddWithValue("@VEH_MODELO", vehiculo.VEH_MODELO);
-                sqlCommand.Parameters.AddWithValue("@VEH_ESTADO", vehiculo.VEH_ESTADO);
-                sqlCommand.Parameters.AddWithValue("@VEH_DESCRIPCION", vehiculo.VEH_DESCRIPCION);
-                sqlConnection.Open();
+                    sqlCommand.Parameters.AddWithValue("@VEH_CODIGO", vehiculo.VEH_CODIGO);
+                    sqlCommand.Parameters.AddWithValue("@REN_CODIGO", vehiculo.REN_CODIGO);
+                    sqlCommand.Parameters.AddWithValue("@VEH_CANT_PASAJEROS", vehiculo.VEH_CANT_PASAJEROS);
+                    sqlCommand.Parameters.AddWithValue("@VEH_MODELO", vehiculo.VEH_MODELO);
+                    sqlCommand.Parameters.AddWithValue("@VEH_ESTADO", vehiculo.VEH_ESTADO);
+                    sqlCommand.Parameters.AddWithValue("@VEH_DESCRIPCION", vehiculo.VEH_DESCRIPCION);
+                    sqlConnection.Open();
 
-                int filasAfectadas = sqlCommand.ExecuteNonQuery();
-                if (filasAfectadas > 0)
-                    return true;
+                    int filasAfectadas = sqlCommand.ExecuteNonQuery();
+                    if (filasAfectadas > 0)
+                        return true;
 
-                sqlConnection.Close();
+                    sqlConnection.Close();
+                }
+
+                return resultado;
             }
+            catch (Exception)
+            {
 
-            return resultado;
+                return false;
+            }
         }
 
         [HttpDelete]
@@ -174,24 +194,32 @@ namespace WebApiSegura.Controllers
 
         private bool EliminarVehiculo(int id)
         {
-            bool resultado = false;
-
-            using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
+            try
             {
-                SqlCommand sqlCommand = new SqlCommand(@"DELETE VEHICULO 
+                bool resultado = false;
+
+                using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
+                {
+                    SqlCommand sqlCommand = new SqlCommand(@"DELETE VEHICULO 
                                                        WHERE VEH_CODIGO = @VEH_CODIGO", sqlConnection);
-                sqlCommand.Parameters.AddWithValue("@VEH_CODIGO", id);
+                    sqlCommand.Parameters.AddWithValue("@VEH_CODIGO", id);
 
-                sqlConnection.Open();
+                    sqlConnection.Open();
 
-                int filasAfectadas = sqlCommand.ExecuteNonQuery();
-                if (filasAfectadas > 0)
-                    return true;
+                    int filasAfectadas = sqlCommand.ExecuteNonQuery();
+                    if (filasAfectadas > 0)
+                        return true;
 
-                sqlConnection.Close();
+                    sqlConnection.Close();
+                }
+
+                return resultado;
             }
+            catch (Exception)
+            {
 
-            return resultado;
+                return false;
+            }
         }
     }
 }

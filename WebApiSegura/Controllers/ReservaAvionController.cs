@@ -101,27 +101,35 @@ namespace WebApiSegura.Controllers
         }
         private bool AddReservaAvion(ReservaAvion reservaAvion)
         {
-            bool resultado = false;
-            using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
+            try
             {
-                SqlCommand sqlCommand = new SqlCommand(@"INSERT INTO RESERVA_AVION ( USU_CODIGO, AVI_CODIGO, RES_AVI_FEC_VUELO, RES_AVI_DURACION, RES_AVI_ESCALA) VALUES(   @USU_CODIGO, @AVI_CODIGO, @RES_AVI_FEC_VUELO, @RES_AVI_DURACION, @RES_AVI_ESCALA)", sqlConnection);
-                sqlCommand.Parameters.AddWithValue("@USU_CODIGO", reservaAvion.USU_CODIGO);
-                sqlCommand.Parameters.AddWithValue("@AVI_CODIGO", reservaAvion.AVI_CODIGO);
-                sqlCommand.Parameters.AddWithValue("@RES_AVI_FEC_VUELO", reservaAvion.RES_AVI_FEC_VUELO);
-                sqlCommand.Parameters.AddWithValue("@RES_AVI_DURACION", reservaAvion.RES_AVI_DURACION);
-                sqlCommand.Parameters.AddWithValue("@RES_AVI_ESCALA", reservaAvion.RES_AVI_ESCALA);
-
-                sqlConnection.Open();
-
-                int filasAfectadas = sqlCommand.ExecuteNonQuery();
-                if (filasAfectadas > 0)
+                bool resultado = false;
+                using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
                 {
-                    resultado = true;
-                }
+                    SqlCommand sqlCommand = new SqlCommand(@"INSERT INTO RESERVA_AVION ( USU_CODIGO, AVI_CODIGO, RES_AVI_FEC_VUELO, RES_AVI_DURACION, RES_AVI_ESCALA) VALUES(   @USU_CODIGO, @AVI_CODIGO, @RES_AVI_FEC_VUELO, @RES_AVI_DURACION, @RES_AVI_ESCALA)", sqlConnection);
+                    sqlCommand.Parameters.AddWithValue("@USU_CODIGO", reservaAvion.USU_CODIGO);
+                    sqlCommand.Parameters.AddWithValue("@AVI_CODIGO", reservaAvion.AVI_CODIGO);
+                    sqlCommand.Parameters.AddWithValue("@RES_AVI_FEC_VUELO", reservaAvion.RES_AVI_FEC_VUELO);
+                    sqlCommand.Parameters.AddWithValue("@RES_AVI_DURACION", reservaAvion.RES_AVI_DURACION);
+                    sqlCommand.Parameters.AddWithValue("@RES_AVI_ESCALA", reservaAvion.RES_AVI_ESCALA);
 
-                sqlConnection.Close();
+                    sqlConnection.Open();
+
+                    int filasAfectadas = sqlCommand.ExecuteNonQuery();
+                    if (filasAfectadas > 0)
+                    {
+                        resultado = true;
+                    }
+
+                    sqlConnection.Close();
+                }
+                return resultado;
             }
-            return resultado;
+            catch (Exception)
+            {
+
+                return false;
+            }
         }
 
         [HttpPut]
@@ -136,34 +144,42 @@ namespace WebApiSegura.Controllers
         }
         private bool UpdateReservaAvion(ReservaAvion reservaAvion)
         {
-            bool resultado = false;
-            using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
+            try
             {
-                SqlCommand sqlCommand = new SqlCommand(@"UPDATE RESERVA_AVION SET
+                bool resultado = false;
+                using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
+                {
+                    SqlCommand sqlCommand = new SqlCommand(@"UPDATE RESERVA_AVION SET
                                                        USU_CODIGO=@USU_CODIGO,
                                                        AVI_CODIGO=@AVI_CODIGO,
                                                         RES_AVI_FEC_VUELO=@RES_AVI_FEC_VUELO,
                                                         RES_AVI_DURACION=@RES_AVI_DURACION,
                                                         RES_AVI_ESCALA=@RES_AVI_ESCALA
                                                         WHERE  RES_AVI_CODIGO=@RES_AVI_CODIGO", sqlConnection);
-                sqlCommand.Parameters.AddWithValue("@RES_AVI_CODIGO", reservaAvion.RES_AVI_CODIGO);
-                sqlCommand.Parameters.AddWithValue("@USU_CODIGO", reservaAvion.USU_CODIGO);
-                sqlCommand.Parameters.AddWithValue("@AVI_CODIGO", reservaAvion.AVI_CODIGO);
-                sqlCommand.Parameters.AddWithValue("@RES_AVI_FEC_VUELO", reservaAvion.RES_AVI_FEC_VUELO);
-                sqlCommand.Parameters.AddWithValue("@RES_AVI_DURACION", reservaAvion.RES_AVI_DURACION);
-                sqlCommand.Parameters.AddWithValue("@RES_AVI_ESCALA", reservaAvion.RES_AVI_ESCALA);
+                    sqlCommand.Parameters.AddWithValue("@RES_AVI_CODIGO", reservaAvion.RES_AVI_CODIGO);
+                    sqlCommand.Parameters.AddWithValue("@USU_CODIGO", reservaAvion.USU_CODIGO);
+                    sqlCommand.Parameters.AddWithValue("@AVI_CODIGO", reservaAvion.AVI_CODIGO);
+                    sqlCommand.Parameters.AddWithValue("@RES_AVI_FEC_VUELO", reservaAvion.RES_AVI_FEC_VUELO);
+                    sqlCommand.Parameters.AddWithValue("@RES_AVI_DURACION", reservaAvion.RES_AVI_DURACION);
+                    sqlCommand.Parameters.AddWithValue("@RES_AVI_ESCALA", reservaAvion.RES_AVI_ESCALA);
 
-                sqlConnection.Open();
+                    sqlConnection.Open();
 
-                int filasAfectadas = sqlCommand.ExecuteNonQuery();
-                if (filasAfectadas > 0)
-                {
-                    resultado = true;
+                    int filasAfectadas = sqlCommand.ExecuteNonQuery();
+                    if (filasAfectadas > 0)
+                    {
+                        resultado = true;
+                    }
+
+                    sqlConnection.Close();
                 }
-
-                sqlConnection.Close();
+                return resultado;
             }
-            return resultado;
+            catch (Exception)
+            {
+
+                return false;
+            }
         }
 
 
@@ -178,25 +194,33 @@ namespace WebApiSegura.Controllers
         }
         private bool DeleteReservaAvion(int id)
         {
-            bool resultado = false;
-            using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
+            try
             {
-                SqlCommand sqlCommand = new SqlCommand(@"DELETE  RESERVA_AVION  
-                                                        WHERE RES_AVI_CODIGO=@RES_AVI_CODIGO", sqlConnection);
-                sqlCommand.Parameters.AddWithValue("@RES_AVI_CODIGO", id);
-
-
-                sqlConnection.Open();
-
-                int filasAfectadas = sqlCommand.ExecuteNonQuery();
-                if (filasAfectadas > 0)
+                bool resultado = false;
+                using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["RESERVAS"].ConnectionString))
                 {
-                    resultado = true;
-                }
+                    SqlCommand sqlCommand = new SqlCommand(@"DELETE  RESERVA_AVION  
+                                                        WHERE RES_AVI_CODIGO=@RES_AVI_CODIGO", sqlConnection);
+                    sqlCommand.Parameters.AddWithValue("@RES_AVI_CODIGO", id);
 
-                sqlConnection.Close();
+
+                    sqlConnection.Open();
+
+                    int filasAfectadas = sqlCommand.ExecuteNonQuery();
+                    if (filasAfectadas > 0)
+                    {
+                        resultado = true;
+                    }
+
+                    sqlConnection.Close();
+                }
+                return resultado;
             }
-            return resultado;
+            catch (Exception)
+            {
+
+                return false;
+            }
         }
 
 
